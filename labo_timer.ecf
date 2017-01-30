@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-16-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-16-0 http://www.eiffel.com/developers/xml/configuration-1-16-0.xsd" name="labo_timer" uuid="2CE8268D-A884-4B2A-9B51-64C0D9E33BE0">
+	<target name="common" abstract="true">
+		<file_rule>
+			<exclude>/EIFGENs$</exclude>
+		</file_rule>
+		<option warning="true">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<capability>
+			<catcall_detection support="none"/>
+			<concurrency support="scoop" use="scoop"/>
+			<void_safety support="all"/>
+		</capability>
+		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="ewf_tools" location=".\ewf_tools\ewf_tools.ecf" readonly="false"/>
+		<library name="http" location="$ISE_LIBRARY\contrib\library\network\protocol\http\http-safe.ecf"/>
+		<library name="mysql" location="$ISE_LIBRARY\library\store\dbms\rdbms\mysql\mysql.ecf"/>
+		<library name="store" location="$ISE_LIBRARY\library\store\store.ecf"/>
+		<library name="wsf" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\wsf-safe.ecf"/>
+		<library name="wsf_session" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\wsf_session-safe.ecf"/>
+	</target>
+	<target name="labo_timer_any" extends="common">
+		<root class="LABO_TIMER" feature="make_and_launch"/>
+		<library name="cgi" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\connector\cgi-safe.ecf"/>
+		<library name="libfcgi" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\connector\libfcgi-safe.ecf"/>
+		<library name="standalone" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\connector\standalone-safe.ecf"/>
+		<cluster name="src" location=".\src\">
+			<cluster name="launcher" location="$|launcher\">
+				<cluster name="any_launcher" location="$|any\"/>
+			</cluster>
+			<cluster name="controllers" location="$|controllers\"/>
+			<cluster name="installer" location="$|installer\"/>
+			<cluster name="models" location="$|models\"/>
+			<cluster name="repositories" location="$|repositories\"/>
+		</cluster>
+	</target>
+	<target name="labo_timer_standalone" extends="common">
+		<root all_classes="true"/>
+		<capability>
+			<catcall_detection support="none"/>
+			<concurrency support="scoop"/>
+			<void_safety support="all"/>
+		</capability>
+		<variable name="httpd_ssl_disabled" value="true"/>
+		<library name="default_standalone" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\default\standalone-safe.ecf"/>
+		<library name="wsf_extension" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\wsf_extension.ecf"/>
+		<cluster name="src" location=".\src\">
+			<cluster name="launcher" location="$|launcher\">
+				<cluster name="default_launcher" location="$|default\"/>
+			</cluster>
+			<cluster name="controllers" location="$|controllers\"/>
+			<cluster name="installer" location="$|installer\"/>
+			<cluster name="models" location="$|models\"/>
+			<cluster name="repositories" location="$|repositories\"/>
+		</cluster>
+	</target>
+	<target name="labo_timer_cgi" extends="common">
+		<root class="LABO_TIMER" feature="make_and_launch"/>
+		<capability>
+			<concurrency use="none"/>
+		</capability>
+		<library name="default_cgi" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\default\cgi-safe.ecf"/>
+		<cluster name="src" location=".\src\">
+			<cluster name="launcher" location="$|launcher\">
+				<cluster name="default_launcher" location="$|default\"/>
+			</cluster>
+			<cluster name="controllers" location="$|controllers\"/>
+			<cluster name="installer" location="$|installer\"/>
+			<cluster name="models" location="$|models\"/>
+			<cluster name="repositories" location="$|repositories\"/>
+		</cluster>
+	</target>
+	<target name="labo_timer_libfcgi" extends="common">
+		<root class="LABO_TIMER" feature="make_and_launch"/>
+		<capability>
+			<concurrency use="none"/>
+		</capability>
+		<library name="default_libfcgi" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\default\libfcgi-safe.ecf"/>
+		<cluster name="src" location=".\src\">
+			<cluster name="launcher" location="$|launcher\">
+				<cluster name="default_launcher" location="$|default\"/>
+			</cluster>
+			<cluster name="controllers" location="$|controllers\"/>
+			<cluster name="installer" location="$|installer\"/>
+			<cluster name="models" location="$|models\"/>
+			<cluster name="repositories" location="$|repositories\"/>
+		</cluster>
+	</target>
+	<target name="labo_timer" extends="labo_timer_any">
+	</target>
+</system>

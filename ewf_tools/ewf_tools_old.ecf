@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="ewf_tools" uuid="49C79423-C197-4493-8EB6-626DD9DF81EC" library_target="ewf_tools">
+	<description>Custom tools to used in Web site creation</description>
+	<target name="ewf_tools">
+		<description>Custom tools to used in Web site creation</description>
+		<root all_classes="true"/>
+		<version major="2" minor="0" release="0" build="1" product="Eiffel_Game_Audio" copyright="Louis Marchand"/>
+		<option full_class_checking="false" is_attached_by_default="false" void_safety="none" syntax="standard">
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+		</option>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<cluster name="ewf_tools" location=".\" recursive="true">
+			<description>Custom tools to used in Web site creation</description>
+			<file_rule>
+				<exclude>/EIFGENs$</exclude>
+			</file_rule>
+		</cluster>
+	</target>
+</system>
