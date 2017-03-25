@@ -16,25 +16,13 @@ create
 
 feature {NONE} -- Initialization
 
-	make(a_session_manager:WSF_SESSION_MANAGER; a_user_repository:REPOSITORY)
+	make(a_session_manager:WSF_SESSION_MANAGER; a_user_repository:MODEL_REPOSITORY)
 		do
 			user_repository := a_user_repository
 			session_manager := a_session_manager
 		end
 
-feature {NONE} -- Implementation
-
-	user_repository:REPOSITORY
-			-- The {REPOSITORY} used to create user {MODEL}
-
-	session_manager:WSF_SESSION_MANAGER
-			-- The internal web session
-
-	session(a_request: WSF_REQUEST):WSF_COOKIE_SESSION
-			-- Repersent a multi request Web session. You can add and retreive data.
-		do
-			create {WSF_COOKIE_SESSION} Result.make (a_request, session_name, session_manager)
-		end
+feature -- Access
 
 	login_user(a_request: WSF_REQUEST):detachable MODEL
 			-- Currently logged user {MODEL} in the Web `session'. Void if no user logged
@@ -58,12 +46,6 @@ feature {NONE} -- Implementation
 			l_session.apply (a_request, a_response, "/")
 		end
 
-	login_user_key:READABLE_STRING_GENERAL
-			-- The key used in the `session' to store the `login_user'
-		once
-			Result := "user_id"
-		end
-
 	logout_user (a_request: WSF_REQUEST; a_response: WSF_RESPONSE)
 			-- Remove the `login_user' from the current Web `session'
 		local
@@ -76,6 +58,26 @@ feature {NONE} -- Implementation
 			l_session.set_expiration(l_date)
 			l_session.apply (a_request, a_response, "/")
 			l_session.destroy
+		end
+
+feature {NONE} -- Implementation
+
+	user_repository:MODEL_REPOSITORY
+			-- The {REPOSITORY} used to create user {MODEL}
+
+	session_manager:WSF_SESSION_MANAGER
+			-- The internal web session
+
+	session(a_request: WSF_REQUEST):WSF_COOKIE_SESSION
+			-- Repersent a multi request Web session. You can add and retreive data.
+		do
+			create {WSF_COOKIE_SESSION} Result.make (a_request, session_name, session_manager)
+		end
+
+	login_user_key:READABLE_STRING_GENERAL
+			-- The key used in the `session' to store the `login_user'
+		once
+			Result := "user_id"
 		end
 
 	session_name:READABLE_STRING_8

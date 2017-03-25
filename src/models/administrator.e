@@ -9,10 +9,22 @@ class
 
 inherit
 	USER
+		rename
+			users_repository as administrators_repository
+		undefine
+			administrators_repository
 		redefine
 			default_create,
 			out_32,
 			is_equal
+		end
+	REPOSITORIES_SHARED
+		undefine
+			default_create,
+			out,
+			is_equal
+		select
+			administrators_repository
 		end
 
 create
@@ -54,39 +66,13 @@ feature -- Settings
 			password_set: a_password.same_string (password)
 		end
 
-	save
-			-- Insert or update `Current' in the database
-		require
-			Is_Connected: repository.database_access.is_connected
-		do
-			if id = 0 then
-				repository.store.put (Current)
-				set_id (repository.database_access.last_inserted_id)
-			else
-				repository.store.update (Current)
-			end
-		ensure
-			Is_In_BD: id > 0
-		end
-
-	delete
-			-- Remove `Current' from the Database
-		require
-			Is_Connected: repository.database_access.is_connected
-		do
-			if id /= 0 then
-				repository.store.delete (Current)
-				set_id (0)
-			end
-		end
-
 feature -- Output
 
 	out_32: STRING_32
 			-- <Precursor>
 		do
 			Result := Precursor {USER}
-			Result.append (password.out + "%N")
+			Result.append (password.to_string_32 + {STRING_32} "%N")
 		end
 
 end

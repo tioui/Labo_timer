@@ -12,10 +12,28 @@ inherit
 
 feature {NONE} -- Implementation
 
-	user_repository:USER_REPOSITORY
+	users_repository:USER_REPOSITORY
 			-- The {REPOSITORY} used to create {USER}
 		once
 			create Result.make (database_access)
 		end
+
+	administrators_repository:ADMINISTRATOR_REPOSITORY
+			-- The {REPOSITORY} used to create {USER}
+		once
+			create Result.make (database_access)
+		end
+
+	laboratories_repository:LABORATORIES_REPOSITORY
+			-- The {REPOSITORY} used to create {LABORATORY}
+		once
+			create Result.make (database_access)
+		end
+
+--	guests_repository:GUESTS_REPOSITORY
+--			-- The {REPOSITORY} used to create {LABORATORY}
+--		once
+--			create Result.make(database_access)
+--		end
 
 end

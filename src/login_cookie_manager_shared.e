@@ -15,8 +15,8 @@ feature {NONE} -- Implementation
 
 	login_cookie_manager:LOGIN_COOKIE_MANAGER
 			-- The cookie manager that manage login
-		do
-			create Result.make (session_manager, user_repository)
+		once
+			create Result.make (session_manager, administrators_repository)
 		end
 
 end

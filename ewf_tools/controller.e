@@ -85,6 +85,19 @@ feature {NONE} -- Implementation
 			end
 		end
 
+	request_model_id(a_request: WSF_REQUEST):detachable CELL[INTEGER]
+			-- Type of `a_request'
+		local
+			l_model_id_text:READABLE_STRING_GENERAL
+		do
+			if attached a_request.path_parameter ("model_id") as la_model_id then
+				l_model_id_text := la_model_id.string_representation.as_string_8
+				if l_model_id_text.is_integer then
+					create Result.put (l_model_id_text.to_integer)
+				end
+			end
+		end
+
 	argument_not_valid_response (a_request: WSF_REQUEST; a_argument: READABLE_STRING_GENERAL): WSF_PAGE_RESPONSE
 			-- Page to show when a path `a_argument' in `a_request' is not valid
 		do
@@ -141,11 +154,19 @@ feature {NONE} -- Implementation
 			Result.put_string (a_request.request_uri + ": An unmanaged error occured.")
 		end
 
-	object_from_form(a_request:WSF_REQUEST; a_object:MODEL;a_prefix, a_sufix:READABLE_STRING_GENERAL):detachable MODEL
+	adding_error_message_to_template(a_template:TEMPLATE_FILE;a_condition:BOOLEAN; a_error_key:READABLE_STRING_GENERAL)
+			-- If `a_condition' is `False', put `a_error_key' in `a_template'
+		do
+			if not a_condition then
+				a_template.add_value (True, a_error_key)
+			end
+		end
+
+	object_from_form(a_request:WSF_REQUEST; a_object:ANY;a_prefix, a_sufix:READABLE_STRING_GENERAL):detachable ANY
 			-- Generate a {MODEL} object base on `a_object' from the form parameter of `a_request' using `a_prefix' and
 			-- `a_sufix' to complete the parameters name.
 		local
-			l_result:MODEL
+			l_result:ANY
 			l_reflexion:REFLECTED_REFERENCE_OBJECT
 			l_error:BOOLEAN
 			l_field_name, l_parameter:READABLE_STRING_GENERAL

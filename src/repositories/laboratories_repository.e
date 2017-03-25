@@ -1,16 +1,16 @@
 note
-	description: "Summary description for {USER_REPOSITORY}."
+	description: "Summary description for {LABORATORIES_REPOSITORY}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	USER_REPOSITORY
+	LABORATORIES_REPOSITORY
 
 inherit
 	MODEL_REPOSITORY
 		redefine
-			make
+			make, insert, update, items
 		end
 	DATABASE_TABLE_NAMES
 
@@ -29,49 +29,60 @@ feature {NONE} -- Initialization
 			guest_store.set_table_name (users_laboratories_table_name)
 			guest_store.set_associations (<<["users_id", "user_id"], ["laboratories_id", "laboratory_id"]>>)
 			create guest_delete.make
-
 		end
 
 feature -- Access
 
-	fetch_by_user_name(a_user_name:READABLE_STRING_GENERAL)
-			-- Get a {USER} from the database using `a_user_name' as username. The fetched object can be retreive with `item'
-		require
-			Is_Connected: database_access.is_connected
-		do
-			execute_fetch_with_where_clause("where `user_name` = '" + a_user_name + "'")
-		ensure
-			Fetched_Object_Valid: attached item as la_item implies la_item.user_name.same_string (a_user_name)
-		end
-
-	fetch_by_laboratory_id(a_id:INTEGER)
+	fetch_by_users_id(a_id:INTEGER)
 		do
 			execute_fetch(
 							{STRING_32} "select * from " + users_laboratories_table_name +
-							{STRING_32} " inner join " + laboratories_table_name +
+							{STRING_32} " inner join " + users_table_name +
 							{STRING_32} " where `laboratories_id` = '" + a_id.out + {STRING_32} "' "
 						)
 		end
 
-	update_laboratories(a_user:USER;a_laboratories:ITERABLE[LABORATORY])
+	update_users(a_laboratory:LABORATORY; a_users:ITERABLE[USER])
 		local
 			l_guest:USERS_LABORATORIES
 		do
 			guest_delete.set_query (
 								{STRING_32} "DELETE FROM `" + users_laboratories_table_name +
-								{STRING_32} "` WHERE `users_id` = '" + a_user.id.out +
+								{STRING_32} "` WHERE `laboratories_id` = '" + a_laboratory.id.out +
 								{STRING_32} "' "
 
 							)
-			across a_laboratories as la_laboratories loop
-				create l_guest.make (a_user.id, la_laboratories.item.id)
+			across a_users as la_users loop
+				create l_guest.make (la_users.item.id, a_laboratory.id)
 				guest_store.insert (l_guest)
 			end
 		end
 
+	insert(a_object:like prototype)
+			-- <Precursor>
+		do
+			Precursor (a_object)
+			a_object.set_id (database_access.last_inserted_id)
+			update_users(a_object, a_object.guests)
+		end
+
+	update(a_object:like prototype)
+			-- <Precursor>
+		do
+			Precursor (a_object)
+			update_users(a_object, a_object.guests)
+		end
+
+	items:LIST[like prototype]
+			-- <Precursor>
+		do
+			Result := Precursor
+			Result.do_all (agent {like prototype}.update_guests)
+		end
+
 feature {CONTROLLER} -- Implementation
 
-	prototype:USER
+	prototype:LABORATORY
 			-- <Precursor>
 		once
 			create Result
@@ -85,9 +96,10 @@ feature {NONE} -- Implementation
 			-- To insert, update or delete a guest from the database
 
 	table_name:STRING_32
-			-- The name of the database table used by `Current'
+			-- <Precursor>
 		once
-			Result := users_table_name
+			Result := laboratories_table_name
 		end
+
 
 end

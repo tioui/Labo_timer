@@ -9,19 +9,25 @@
 		</option>
 		<capability>
 			<catcall_detection support="none"/>
-			<concurrency support="scoop" use="scoop"/>
+			<concurrency support="scoop" use="none"/>
 			<void_safety support="all"/>
 		</capability>
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="eel" location="$ISE_LIBRARY\contrib\library\text\encryption\eel\eel.ecf"/>
 		<library name="ewf_tools" location=".\ewf_tools\ewf_tools.ecf" readonly="false"/>
 		<library name="http" location="$ISE_LIBRARY\contrib\library\network\protocol\http\http-safe.ecf"/>
 		<library name="mysql" location="$ISE_LIBRARY\library\store\dbms\rdbms\mysql\mysql.ecf"/>
 		<library name="store" location="$ISE_LIBRARY\library\store\store.ecf"/>
+		<library name="template_smarty" location="$ISE_LIBRARY\contrib\library\text\template\smarty\smarty.ecf"/>
+		<library name="time" location="$ISE_LIBRARY\library\time\time.ecf"/>
 		<library name="wsf" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\wsf-safe.ecf"/>
 		<library name="wsf_session" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\wsf_session-safe.ecf"/>
 	</target>
 	<target name="labo_timer_any" extends="common">
 		<root class="LABO_TIMER" feature="make_and_launch"/>
+		<capability>
+			<concurrency support="scoop"/>
+		</capability>
 		<library name="cgi" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\connector\cgi-safe.ecf"/>
 		<library name="libfcgi" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\connector\libfcgi-safe.ecf"/>
 		<library name="standalone" location="$ISE_LIBRARY\contrib\library\web\framework\ewf\wsf\connector\standalone-safe.ecf"/>
@@ -36,7 +42,7 @@
 		</cluster>
 	</target>
 	<target name="labo_timer_standalone" extends="common">
-		<root all_classes="true"/>
+		<root class="LABO_TIMER" feature="make_and_launch"/>
 		<capability>
 			<catcall_detection support="none"/>
 			<concurrency support="scoop"/>
@@ -51,7 +57,10 @@
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
 			<cluster name="installer" location="$|installer\"/>
-			<cluster name="models" location="$|models\"/>
+			<cluster name="models" location="$|models\">
+				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
+				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
 	</target>

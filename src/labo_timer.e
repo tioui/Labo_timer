@@ -18,10 +18,12 @@ inherit
 	DATABASE_APPL [MYSQL]
         rename
             login as database_login,
-            set_application as set_schema
+            set_application as set_database_schema,
+            set_base as set_database_base
         end
     CONFIGURATION_SHARED
     DATABASE_ACCESS_SHARED
+    REPOSITORIES_SHARED
 
 
 create
@@ -39,6 +41,8 @@ feature {NONE} -- Initialization
 		end
 
 	initialize_database
+		local
+			l_user_name, l_password:STRING_8
 		do
 			if
 				(attached {READABLE_STRING_GENERAL} configurations.at ("database_schema") as la_database_schema and
@@ -46,10 +50,15 @@ feature {NONE} -- Initialization
 				attached {READABLE_STRING_GENERAL} configurations.at ("database_password") as la_database_password) and then
 				(la_database_schema.is_valid_as_string_8 and la_database_user.is_valid_as_string_8 and la_database_password.is_valid_as_string_8)
 			then
-				database_login (la_database_user.as_string_8, la_database_password.as_string_8)
-				set_schema (la_database_schema.as_string_8)
-				database_access.connect
-				if not database_access.is_connected then
+				l_user_name := la_database_user.to_string_8
+				l_password := la_database_password.to_string_8
+				if db_spec.user_name_ok (l_user_name) and db_spec.password_ok (l_password) then
+					database_login (la_database_user.as_string_8, la_database_password.as_string_8)
+					set_database_schema (la_database_schema.as_string_8)
+					set_database_base
+					database_access.connect
+				end
+				if not is_database_set or else not database_access.is_connected then
 					if is_verbose then
 						io.error.put_string ("Cannot initialize MySQL Database. Check that the information in the 'config.ini' file are valid.")
 					end

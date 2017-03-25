@@ -23,7 +23,7 @@ feature {NONE} -- Initialization
 			set_id(0)
 		end
 
-feature -- Settings
+feature -- Access
 
 	id: INTEGER
 			-- Unique identifier of `Current'
@@ -47,16 +47,18 @@ feature -- Settings
 			Result := out_32.to_string_8
 		end
 
+
+feature -- Settings
+
 	save
 			-- Insert or update `Current' in the database
 		require
 			Is_Connected: repository.database_access.is_connected
 		do
 			if id = 0 then
-				repository.store.put (Current)
-				set_id (repository.database_access.last_inserted_id)
+				repository.insert (Current)
 			else
-				repository.store.update (Current)
+				repository.update (Current)
 			end
 		ensure
 			Is_In_BD: id > 0
@@ -68,7 +70,7 @@ feature -- Settings
 			Is_Connected: repository.database_access.is_connected
 		do
 			if id /= 0 then
-				repository.store.delete (Current)
+				repository.delete (Current)
 				set_id (0)
 			end
 		end
@@ -78,7 +80,7 @@ feature -- Settings
 		deferred
 		end
 
-feature {NONE} -- Implementation
+feature {REPOSITORY, VIEW_MODEL} -- Implementation
 
 	set_id (a_id: INTEGER)
 			-- Assign the unique identifier of `Current'

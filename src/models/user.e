@@ -10,7 +10,7 @@ class
 inherit
 	MODEL
 		rename
-			repository as user_repository
+			repository as users_repository
 		redefine
 			is_equal,
 			default_create,
@@ -97,9 +97,9 @@ feature -- Output
 			-- <Precursor>
 		do
 			Result := Precursor {MODEL}
-			Result.append (user_name.out + "%N")
-			Result.append (first_name.out + "%N")
-			Result.append (last_name.out + "%N")
+			Result.append (user_name.to_string_32 + {STRING_32} "%N")
+			Result.append (first_name.to_string_32 + {STRING_32} "%N")
+			Result.append (last_name.to_string_32 + {STRING_32} "%N")
 		end
 
 

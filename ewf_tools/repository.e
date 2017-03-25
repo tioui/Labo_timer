@@ -9,7 +9,7 @@ deferred class
 
 feature {NONE} -- Initialization
 
-	make(a_database_access:DATABASE_ACCESS)
+	make(a_database_access:DATABASE_ACCESS; a_keys: ARRAY [READABLE_STRING_GENERAL])
 			-- Initialization of `Current' using `a_database_access' as database manager
 		local
 			l_repository: DB_REPOSITORY
@@ -18,8 +18,8 @@ feature {NONE} -- Initialization
 			create l_repository.make (table_name)
 			l_repository.load
 			check l_repository.exists end
-			create store.make_with_keys (<<"id">>)
-			store.set_repository (l_repository)
+			create store.make_with_keys (a_keys)
+			store.set_associations_from_repository (l_repository)
 			create selection.make
 			selection.object_convert (prototype.twin)
 		end
@@ -30,19 +30,9 @@ feature -- Access
 			-- The database manager
 
 	create_new:like prototype
-			-- New empty instance of a {MODEL} managed by `Current'
+			-- New empty instance of an object managed by `Current'
 		do
 			Result := prototype.twin
-		end
-
-	fetch_by_id(a_id:INTEGER)
-			-- Get an object from the database using `a_id' as unique index. The fetched object can be retreive with `item'
-		require
-			Is_Connected: database_access.is_connected
-		do
-			execute_fetch("select * from `" + table_name + "` where id = '" +a_id.out + "'")
-		ensure
-			Fetched_Object_Valid: attached item as la_item implies la_item.id = a_id
 		end
 
 	fetch_all
@@ -50,15 +40,7 @@ feature -- Access
 		require
 			Is_Connected: database_access.is_connected
 		do
-			execute_fetch ("select * from `" + table_name + "`")
-		end
-
-	fetch_last_inserted
-			-- Get the last inserted objects from the database.
-		require
-			Is_Connected: database_access.is_connected
-		do
-			execute_fetch("select * from `" + table_name + "` where id = (select MAX(`ID`) from `" + table_name + "`)")
+			execute_fetch_with_where_clause ("")
 		end
 
 	item:detachable like prototype
@@ -81,20 +63,42 @@ feature -- Access
 			Result := filler.list
 		end
 
+	insert(a_object:like prototype)
+			-- Insert `a_object' in the database
+		do
+			store.insert (a_object)
+		end
+
+	update(a_object:like prototype)
+			-- Modify `a_object' in the database
+		do
+			store.update (a_object)
+		end
+
+	delete(a_object:like prototype)
+			-- Remove `a_object' in the database
+		do
+			store.delete (a_object)
+		end
+
 
 feature {CONTROLLER} -- Implementation
 
-	prototype:MODEL
+	prototype:ANY
 			-- A default {MODEL} object managed by `Current'
 		deferred
 		end
 
-feature {MODEL} -- Implementation
+feature {NONE} -- Implementation
 
 	store:STORAGE
 			-- To insert, update or delete an object from the database
 
-feature {NONE} -- Implementation
+	select_join_clause:STRING_32
+			-- The "INNER JOIN" clause of every fetch call
+		do
+			Result := {STRING_32} "SELECT * FROM `" + table_name + "` ";
+		end
 
 	selection:DB_SELECTION
 			-- To fetch objects from the database
@@ -102,22 +106,32 @@ feature {NONE} -- Implementation
 	filler: DB_ACTION [like prototype]
 			-- Transform fetched object using `selection' to {MODEL} object
 
-	table_name:STRING
+	table_name:STRING_32
 			-- The name of the database table used by `Current'
 		deferred
 		end
 
-	execute_fetch(a_query:READABLE_STRING_GENERAL)
-			-- Launch every fetch using `a_query' as SQL query
+	execute_fetch_with_where_clause(a_where_clause:READABLE_STRING_GENERAL)
+			-- Launch a fetch using the standard `select_join_clause' and `a_where_clause' as SQL query
+		require
+			Is_Connected: database_access.is_connected
+		do
+			execute_fetch(select_join_clause + a_where_clause)
+		end
+
+	execute_fetch(a_sql_query:READABLE_STRING_GENERAL)
+			-- Launch a fetch using `a_query' as SQL query
 		require
 			Is_Connected: database_access.is_connected
 		do
 			filler.list.wipe_out
-			selection.set_query (a_query)
+			selection.set_query (a_sql_query)
 			selection.execute_query
 			if selection.is_ok then
 				selection.load_result
 			end
 			selection.terminate
 		end
+
+
 end

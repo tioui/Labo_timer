@@ -53,18 +53,32 @@ feature -- Router
 			fhdl: WSF_FILE_SYSTEM_HANDLER
 		do
 
---			map_uri_template ("/video/", create {VIDEO_CONTROLLER}, router.methods_GET_POST)
-				--| As example:
-				--|   /doc is dispatched to self documentated page
-				--|   /* are dispatched to serve files/directories contained in "www" directory
+			map_uris_template (<<"", "/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/log", "/log/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/log/{type}", "/log/{type}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
+			map_crud("laboratories", create {LABORATORIES_CONTROLLER})
+			map_uris_template (<<"/laboratories/{type}/{model_id}/{sub_type}", "/laboratories/{type}/{model_id}/{sub_type}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}", "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_crud("users", create {USERS_CONTROLLER})
+			map_crud("administrators", create {ADMINISTRATORS_CONTROLLER})
 
-				--| Self documentation
---			router.handle ("/doc", create {WSF_ROUTER_SELF_DOCUMENTATION_HANDLER}.make (router), router.methods_GET)
-
-				--| Files publisher
 			create fhdl.make_hidden ("www")
 			fhdl.set_directory_index (<<"index.html">>)
-			router.handle ("", fhdl, router.methods_GET)
+			router.handle ("/www", fhdl, router.methods_GET)
+		end
+
+	map_crud(a_name:STRING_8; a_handler: WSF_URI_TEMPLATE_HANDLER)
+		do
+			map_uris_template (<<"/" + a_name, "/" + a_name + "/">>, a_handler, router.methods_GET_POST)
+			map_uris_template (<<"/" + a_name + "/{type}", "/" + a_name + "/{type}/">>, a_handler, router.methods_GET_POST)
+			map_uris_template (<<"/" + a_name + "/{type}/{model_id}", "/" + a_name + "/{type}/{model_id}/">>, a_handler, router.methods_GET_POST)
+		end
+
+	map_uris_template(a_templates: ARRAY[STRING_8]; a_handler: WSF_URI_TEMPLATE_HANDLER; a_request_methods: detachable WSF_REQUEST_METHODS)
+		do
+			across create {ARRAYED_LIST[STRING_8]}.make_from_array (a_templates) as la_templates loop
+				map_uri_template (la_templates.item, a_handler, a_request_methods)
+			end
 		end
 
 end

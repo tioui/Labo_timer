@@ -28,6 +28,9 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	connect
+		require
+			Not_Connected: not database_session.is_connected
+			Has_Base: database_session.is_database_set
 		do
 			database_session.connect
 			if is_connected then
@@ -40,9 +43,6 @@ feature -- Access
 		do
 			Result := database_session.is_connected
 		end
-
-	has_error:BOOLEAN
-			-- An error occured while connecting to database
 
 	database_session: DB_CONTROL
 			-- Manage the connection session of the database
