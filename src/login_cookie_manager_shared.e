@@ -13,10 +13,16 @@ inherit
 
 feature {NONE} -- Implementation
 
-	login_cookie_manager:LOGIN_COOKIE_MANAGER
-			-- The cookie manager that manage login
+	administrator_cookie_manager:LOGIN_COOKIE_MANAGER
+			-- The cookie manager that manage aministrator login
 		once
-			create Result.make (session_manager, administrators_repository)
+			create Result.make (administrator_session_manager, administrators_repository)
+		end
+
+	user_cookie_manager:LOGIN_COOKIE_MANAGER
+			-- The cookie manager that manage user login
+		once
+			create Result.make (user_session_manager, users_repository)
 		end
 
 end

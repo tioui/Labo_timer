@@ -127,6 +127,7 @@ feature -- Access
 		do
 			if not table_name.is_empty and not associations.is_empty then
 				create l_reflection.make (a_object)
+				db_insert.clear_all
 				update_map_fields (db_insert, l_reflection)
 				db_insert.execute_query
 			end

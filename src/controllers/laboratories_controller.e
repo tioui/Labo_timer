@@ -10,7 +10,8 @@ class
 inherit
 	CRUD_CONTROLLER
 		rename
-			model_repository as laboratories_repository
+			model_repository as laboratories_repository,
+			login_cookie_manager as administrator_cookie_manager
 		redefine
 			model_collection_name,
 			default_create
@@ -71,13 +72,15 @@ feature {NONE} -- Implementation
 		local
 			l_type:STRING_8
 		do
-			if attached login_cookie_manager.login_user (a_request) then
+			if attached administrator_cookie_manager.login_user (a_request) then
 				if attached a_request.path_parameter ("sub_type") as la_type then
 					l_type := la_type.string_representation.as_lower.to_string_8
 					if l_type ~ "list" then
 						Result := guest_list_get(a_request)
 					elseif l_type ~ "adding" then
 						Result := guest_adding_get(a_request)
+					elseif l_type ~ "remove" then
+						Result := guest_remove_get(a_request)
 					else
 						Result := argument_not_valid_response (a_request, l_type.string_representation)
 					end
@@ -92,7 +95,7 @@ feature {NONE} -- Implementation
 	guest_post (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
 			-- Manage the POST `a_request' of the 'guest' management pages
 		do
-			if attached login_cookie_manager.login_user (a_request) then
+			if attached administrator_cookie_manager.login_user (a_request) then
 				if attached a_request.path_parameter ("sub_type") as l_type then
 					Result := argument_not_valid_response (a_request, l_type.string_representation)
 				else
@@ -167,12 +170,62 @@ feature {NONE} -- Implementation
 	adding_guest(a_template:TEMPLATE_FILE; a_laboratory:LABORATORY; a_guest_id:INTEGER)
 			-- Adding `a_guest_id' as `a_laboratory' guest. Update `a_template' if there is an error
 		do
+			if not across a_laboratory.guests as la_guests some la_guests.item.id = a_guest_id end then
+				users_repository.fetch_by_id (a_guest_id)
+				if attached users_repository.item as la_user then
+					a_laboratory.guests.extend (la_user)
+					a_laboratory.save
+				else
+					a_template.add_value (True, "guest_not_found")
+				end
+			end
+
+		end
+
+	guest_remove_get(a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
+			-- Manage the GET `a_request' of the guest 'remove' page
+		do
+			if attached request_model_id (a_request) as la_id then
+				laboratories_repository.fetch_by_id (la_id.item)
+				if attached laboratories_repository.item as la_laboratory then
+					if
+						attached a_request.path_parameter ("sub_model_id") as la_user_id and then
+						la_user_id.string_representation.is_integer
+					then
+						removing_guest(la_laboratory, la_user_id.string_representation.to_integer)
+					end
+					Result := guest_list_get (a_request)
+				else
+					Result := object_not_found (a_request)
+				end
+			else
+				Result := argument_not_found_response (a_request)
+			end
+		end
+
+	removing_guest(a_laboratory:LABORATORY; a_guest_id:INTEGER)
+			-- Adding `a_guest_id' as `a_laboratory' guest.
+		local
+			l_found:BOOLEAN
+		do
 			users_repository.fetch_by_id (a_guest_id)
 			if attached users_repository.item as la_user then
-				a_laboratory.guests.extend (la_user)
-				a_laboratory.save
-			else
-				a_template.add_value (True, "guest_not_found")
+				from
+					a_laboratory.guests.start
+					l_found := False
+				until
+					l_found or a_laboratory.guests.exhausted
+				loop
+					if a_laboratory.guests.item.id = a_guest_id then
+						a_laboratory.guests.remove
+						l_found := True
+					else
+						a_laboratory.guests.forth
+					end
+				end
+				if l_found then
+					a_laboratory.save
+				end
 			end
 		end
 

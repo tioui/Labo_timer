@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {USER_REPOSITORY}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Repository used to manage {USER} database."
+	author: "Louis Marchand"
+	date: "Mon, 27 Mar 2017 00:26:54 +0000"
+	revision: "0.1"
 
 class
 	USER_REPOSITORY
@@ -29,7 +29,6 @@ feature {NONE} -- Initialization
 			guest_store.set_table_name (users_laboratories_table_name)
 			guest_store.set_associations (<<["users_id", "user_id"], ["laboratories_id", "laboratory_id"]>>)
 			create guest_delete.make
-
 		end
 
 feature -- Access
@@ -48,8 +47,8 @@ feature -- Access
 		do
 			execute_fetch(
 							{STRING_32} "select * from " + users_laboratories_table_name +
-							{STRING_32} " inner join " + laboratories_table_name +
-							{STRING_32} " where `laboratories_id` = '" + a_id.out + {STRING_32} "' "
+							{STRING_32} " inner join " + users_table_name +
+							{STRING_32} " where `users_id` = `id` and `laboratories_id` = '" + a_id.out + {STRING_32} "' "
 						)
 		end
 

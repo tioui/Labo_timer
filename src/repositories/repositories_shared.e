@@ -30,10 +30,10 @@ feature {NONE} -- Implementation
 			create Result.make (database_access)
 		end
 
---	guests_repository:GUESTS_REPOSITORY
---			-- The {REPOSITORY} used to create {LABORATORY}
---		once
---			create Result.make(database_access)
---		end
+	interventions_repository:INTERVENTION_REPOSITORY
+			-- The {REPOSITORY} used to create {INTERVENTION}
+		once
+			create Result.make(database_access)
+		end
 
 end

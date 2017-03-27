@@ -10,7 +10,8 @@ class
 inherit
 	CRUD_CONTROLLER
 		rename
-			model_repository as users_repository
+			model_repository as users_repository,
+			login_cookie_manager as administrator_cookie_manager
 		end
 	LOGIN_COOKIE_MANAGER_SHARED
 		undefine

@@ -10,7 +10,8 @@ class
 inherit
 	CRUD_CONTROLLER
 		rename
-			model_repository as administrators_repository
+			model_repository as administrators_repository,
+			login_cookie_manager as administrator_cookie_manager
 		redefine
 			adding_model_create_errors_to_template,
 			edit_post
@@ -73,7 +74,7 @@ feature {NONE} -- Implementation
 			l_administrator:ADMINISTRATOR
 
 		do
-			if attached login_cookie_manager.login_user (a_request) then
+			if attached administrator_cookie_manager.login_user (a_request) then
 				if attached a_request.form_parameter ("cancel") then
 					create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
 				else

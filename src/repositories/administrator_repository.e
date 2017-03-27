@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {ADMINISTRATOR_REPOSITORY}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Repository used to manage {ADMINISTRATOR} database."
+	author: "Louis Marchand"
+	date: "Mon, 27 Mar 2017 00:26:54 +0000"
+	revision: "0.1"
 
 class
 	ADMINISTRATOR_REPOSITORY

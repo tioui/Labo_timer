@@ -9,8 +9,13 @@ deferred class
 
 feature {NONE} -- Implementation
 
-	session_manager:WSF_SESSION_MANAGER
+	administrator_session_manager:WSF_SESSION_MANAGER
 		once
-			create {WSF_FS_SESSION_MANAGER}Result.make_with_folder ("./session_folder")
+			create {WSF_FS_SESSION_MANAGER}Result.make_with_folder ("./session_folder/administrators/")
+		end
+
+	user_session_manager:WSF_SESSION_MANAGER
+		once
+			create {WSF_FS_SESSION_MANAGER}Result.make_with_folder ("./session_folder/guests/")
 		end
 end

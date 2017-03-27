@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {LABORATORIES_REPOSITORY}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Repository used to manage {LABORATORY} database."
+	author: "Louis Marchand"
+	date: "Mon, 27 Mar 2017 00:26:54 +0000"
+	revision: "0.1"
 
 class
 	LABORATORIES_REPOSITORY
@@ -10,7 +10,7 @@ class
 inherit
 	MODEL_REPOSITORY
 		redefine
-			make, insert, update, items
+			make, insert, update
 		end
 	DATABASE_TABLE_NAMES
 
@@ -52,6 +52,7 @@ feature -- Access
 								{STRING_32} "' "
 
 							)
+			guest_delete.execute_query
 			across a_users as la_users loop
 				create l_guest.make (la_users.item.id, a_laboratory.id)
 				guest_store.insert (l_guest)
@@ -71,13 +72,6 @@ feature -- Access
 		do
 			Precursor (a_object)
 			update_users(a_object, a_object.guests)
-		end
-
-	items:LIST[like prototype]
-			-- <Precursor>
-		do
-			Result := Precursor
-			Result.do_all (agent {like prototype}.update_guests)
 		end
 
 feature {CONTROLLER} -- Implementation

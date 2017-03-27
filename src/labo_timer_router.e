@@ -56,9 +56,13 @@ feature -- Router
 			map_uris_template (<<"", "/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<"/log", "/log/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<"/log/{type}", "/log/{type}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/log/{type}/{model_id}", "/log/{type}/{model_id}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
 			map_crud("laboratories", create {LABORATORIES_CONTROLLER})
 			map_uris_template (<<"/laboratories/{type}/{model_id}/{sub_type}", "/laboratories/{type}/{model_id}/{sub_type}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<"/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}", "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/labo/{model_id}", "/labo/{model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/labo/{model_id}/{type}", "/labo/{model_id}/{type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/labo/{model_id}/{type}/{sub_type}/{sub_model_id}", "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
 			map_crud("users", create {USERS_CONTROLLER})
 			map_crud("administrators", create {ADMINISTRATORS_CONTROLLER})
 

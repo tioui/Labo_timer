@@ -8,14 +8,14 @@
 						Nom d'usager ou mot de passe incorect
 					</div>
 				{/if}
-				<form method="post" action="{$script_url/}/log/in/">
+				<form method="post" action="{$script_url/}/log/labo/{$laboratory.id/}">
 					<table class="form-table">
 						<tr>
 							<td>Nom d'usager:</td><td><input tabindex=1 type="text" size="12" name="user_name"></td>
 							<td rowspan=2 class="form-button"><input tabindex=3 class="btn btn-lg btn-default" type="submit" name="submit" value="Connecter"/></td>
 						</tr>
 						<tr>
-							<td>Mot de passe:</td><td><input tabindex=2 type="password1" size="12" name="password1"></td>
+							<td>Mot de passe du laboratoire:</td><td><input tabindex=2 type="password" size="12" name="password"></td>
 						</tr>
 					</table>
 				</form>
