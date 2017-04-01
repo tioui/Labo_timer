@@ -63,6 +63,7 @@ feature -- Router
 			map_uris_template (<<"/labo/{model_id}", "/labo/{model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<"/labo/{model_id}/{type}", "/labo/{model_id}/{type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<"/labo/{model_id}/{type}/{sub_type}/{sub_model_id}", "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<"/labo/{model_id}/{type}/{sub_type}", "/labo/{model_id}/{type}/{sub_type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
 			map_crud("users", create {USERS_CONTROLLER})
 			map_crud("administrators", create {ADMINISTRATORS_CONTROLLER})
 

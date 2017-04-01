@@ -96,7 +96,7 @@ feature {NONE} -- Implementation
 				initialize_template (l_template, a_request)
 				create l_view_models.make
 				model_repository.fetch_all
-				across model_repository.items as la_items loop
+				across model_repository.items.twin as la_items loop
 					l_view_model := view_model
 					l_view_model.make(la_items.item)
 					l_view_models.extend(l_view_model)

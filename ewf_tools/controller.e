@@ -106,6 +106,14 @@ feature {NONE} -- Implementation
 			Result.put_string (a_request.request_uri + ": Argument " + a_argument + " not valid.")
 		end
 
+	unauthorized_response (a_request: WSF_REQUEST): WSF_PAGE_RESPONSE
+			-- Page to show when the user doe's not have access to `a_request'
+		do
+			create Result.make
+			Result.set_status_code ({HTTP_STATUS_CODE}.forbidden)
+			Result.put_string ("Unauthorized access.")
+		end
+
 	argument_not_found_response (a_request: WSF_REQUEST): WSF_PAGE_RESPONSE
 			-- Page to show when an argument is needed in `a_request'but not found
 		do

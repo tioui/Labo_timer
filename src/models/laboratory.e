@@ -133,6 +133,21 @@ feature -- Access
 			internal_interventions := l_interventions
 		end
 
+feature -- Status report
+
+	is_presently_executing:BOOLEAN
+			-- `True' if `Current' is presently in execution
+		local
+			l_now:DATE_TIME
+		do
+			create l_now.make_now
+			if l_now >= start_date and l_now <= end_date then
+				Result := True
+			else
+				Result := False
+			end
+		end
+
 
 feature -- Output
 

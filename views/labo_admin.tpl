@@ -3,31 +3,15 @@
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Laboratoire {$laboratory.name/}</H1>
-			<table class="table">
-				<tr>
-					<th>
-						Nom
-					</th>
-					<th>
-						Temps en attente
-					</th>
-					<th>
-					</th>
-				</tr>
-				{foreach item="intervention" from="$interventions"}
-				<tr>
-					<td>
-						{$intervention.name/}
-					</td>
-					<td>
-						{$intervention.time/}
-					</td>
-					<td>
-						<a name="answering{$intervention.id/}" href="{$script_url/}/labo/{$laboratory.id/}/admin/answering/{$intervention.id/}">Répondre</a> 
-					</td>
-				</tr>
-				{/foreach}
-			</table>
+			<p>Lien pour participer: <a href="{$participations_link/}">{$participations_link/}</a>
+			<div id="table_interventions">
+{$table_interventions/}
+			</div>
 		</div>
 	</div>
+<script type="text/javascript" src="{$script_url/}/www/scripts/hand_raise.js"></script>
+<script>
+setInterval(update_interventions, 5000, "{$script_url/}/labo/{$laboratory.id/}/admin/update_interventions")
+</script>
+
 {include file="views/footer.tpl"/}

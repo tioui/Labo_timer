@@ -152,7 +152,7 @@ feature {NONE} -- Implementation
 					l_template.add_value (create {LABORATORY_VIEW_MODEL}.make (la_laboratory) , "laboratory")
 					create l_view_models.make
 					users_repository.fetch_all
-					across users_repository.items as la_items loop
+					across users_repository.items.twin as la_items loop
 						if not across la_laboratory.guests as la_guests some la_guests.item.id = la_items.item.id end then
 							l_view_models.extend (create {USER_VIEW_MODEL}.make (la_items.item))
 						end

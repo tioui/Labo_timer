@@ -42,7 +42,7 @@
 						{$laboratory.end_time/}
 					</td>
 					<td>
-						<a name="guest_list{$laboratory.id/}" href="{$script_url/}/laboratories/guest/{$laboratory.id/}/list/">Participants</a> | <a name="edit_link{$laboratory.id/}" href="{$script_url/}/laboratories/edit/{$laboratory.id/}/">Modifier</a> | <a name="delete_link{$laboratory.id/}" href="{$script_url/}/laboratories/remove/{$laboratory.id/}/">Supprimer</a> 
+						<a name="guest_list{$laboratory.id/}" href="{$script_url/}/laboratories/guest/{$laboratory.id/}/list/">Participants</a> | <a name="edit_link{$laboratory.id/}" href="{$script_url/}/laboratories/edit/{$laboratory.id/}/">Modifier</a> | <a name="delete_link{$laboratory.id/}" href="{$script_url/}/laboratories/remove/{$laboratory.id/}/">Supprimer</a>{if condition="$laboratory.is_presently_executing"} | <a name="Execution{$laboratory.id/}" href="{$script_url/}/labo/{$laboratory.id/}/admin">Exécution</a>{/if}
 					</td>
 				</tr>
 				{/foreach}

@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {INTERVENTION_VIEW_MODEL}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "A view model used of an {INTERVENTION}."
+	author: "Louis Marchand"
+	date: "Sun, 26 Mar 2017 18:59:34 +0000"
+	revision: "0.1"
 
 class
 	INTERVENTION_VIEW_MODEL
@@ -30,8 +30,7 @@ feature {NONE} -- Initialization
 	make(a_intervention:INTERVENTION)
 			-- Initialization of `Current' using `a_intervention' to initialize attributes
 		local
-			l_now, l_time:TIME
-			l_seconds:INTEGER
+			l_intervention_start_time, l_now, l_time:TIME
 		do
 			Precursor(a_intervention)
 			if attached a_intervention.user as la_user then
@@ -39,8 +38,13 @@ feature {NONE} -- Initialization
 			else
 				name := ""
 			end
+			l_intervention_start_time := a_intervention.start_time
 			create l_now.make_now
-			create l_time.make_by_seconds ((create {TIME}.make_now).seconds - a_intervention.start_time.seconds)
+			if l_now < l_intervention_start_time then
+				create l_time.make_by_seconds (0)
+			else
+				create l_time.make_by_seconds ((l_now).seconds - l_intervention_start_time.seconds)
+			end
 			time := l_time.formatted_out ("mi:[0]ss")
 		end
 

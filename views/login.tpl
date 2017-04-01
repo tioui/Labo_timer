@@ -15,7 +15,7 @@
 							<td rowspan=2 class="form-button"><input tabindex=3 class="btn btn-lg btn-default" type="submit" name="submit" value="Connecter"/></td>
 						</tr>
 						<tr>
-							<td>Mot de passe:</td><td><input tabindex=2 type="password1" size="12" name="password1"></td>
+							<td>Mot de passe:</td><td><input tabindex=2 type="password" size="12" name="password1"></td>
 						</tr>
 					</table>
 				</form>
