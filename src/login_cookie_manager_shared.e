@@ -1,8 +1,12 @@
 note
-	description: "Summary description for {LOGIN_COOKIE_MANAGER_SHARED}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "[
+				Every class that have to used the login cookie functionnality
+				(for exemple, connect, disconnect or validate the connected user)
+				must inherit from this class.
+			]"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 deferred class
 	LOGIN_COOKIE_MANAGER_SHARED

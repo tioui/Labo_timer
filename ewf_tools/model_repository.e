@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {MODEL_REPOSITORY}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "A {REPOSITORY} used to manage {MODEL}"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 deferred class
 	MODEL_REPOSITORY

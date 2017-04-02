@@ -24,6 +24,7 @@ feature -- Execution
 		end
 
 	launcher_id: detachable READABLE_STRING_GENERAL
+			-- An identifier for `Current'
 		once
 			-- Not used for default connector selection.
 		end

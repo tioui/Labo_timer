@@ -1,10 +1,8 @@
 note
-	description: "[
-				application service
-			]"
-	date: "$Date: 2016-10-21 10:45:18 -0700 (Fri, 21 Oct 2016) $"
-	revision: "$Revision: 99331 $"
-
+	description: "Root class of the application"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 class
 	LABO_TIMER
 
@@ -41,6 +39,7 @@ feature {NONE} -- Initialization
 		end
 
 	initialize_database
+			-- Initialize the database
 		local
 			l_user_name, l_password:STRING_8
 		do

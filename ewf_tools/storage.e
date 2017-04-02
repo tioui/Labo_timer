@@ -83,6 +83,7 @@ feature -- Access
 		end
 
 	remove_association(a_table_field:READABLE_STRING_GENERAL)
+			-- Remove `a_table_field' in `associations'
 		local
 			l_is_found:BOOLEAN
 		do

@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {LOGIN_CONTROLLER}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "A {CONTROLLER} used to manage the connexion of {USER}"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 class
 	LOGIN_CONTROLLER
@@ -37,7 +37,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	execute (a_request: WSF_REQUEST; res: WSF_RESPONSE)
+	execute (a_request: WSF_REQUEST; a_response: WSF_RESPONSE)
 			-- <Precursor>
 		local
 			l_message:WSF_RESPONSE_MESSAGE
@@ -47,15 +47,15 @@ feature -- Access
 			l_message := response (a_request)
 			if attached request_type(a_request) as la_type then
 				if la_type.is_equal("in") and attached new_connected_administrator as la_administrator then
-					administrator_cookie_manager.set_login_user (a_request, res, la_administrator)
+					administrator_cookie_manager.set_login_user (a_request, a_response, la_administrator)
 				elseif la_type.is_equal("out") then
-					administrator_cookie_manager.logout_user(a_request, res)
-					user_cookie_manager.logout_user(a_request, res)
+					administrator_cookie_manager.logout_user(a_request, a_response)
+					user_cookie_manager.logout_user(a_request, a_response)
 				elseif la_type.is_equal("labo") and attached new_connected_guest as la_guest then
-					user_cookie_manager.set_login_user (a_request, res, la_guest)
+					user_cookie_manager.set_login_user (a_request, a_response, la_guest)
 				end
 			end
-			res.send (l_message)
+			a_response.send (l_message)
 		end
 
 

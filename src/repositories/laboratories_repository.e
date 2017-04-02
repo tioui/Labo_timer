@@ -19,10 +19,10 @@ create {REPOSITORIES_SHARED}
 
 feature {NONE} -- Initialization
 
-	make(l_database_access:DATABASE_ACCESS)
+	make(a_database_access:DATABASE_ACCESS)
 			-- <Precursor>
 		do
-			Precursor {MODEL_REPOSITORY}(l_database_access)
+			Precursor {MODEL_REPOSITORY}(a_database_access)
 			create filler.make (selection, prototype.twin)
 			selection.set_action (filler)
 			create guest_store.make_with_keys (<<"users_id", "laboratories_id">>)
@@ -34,6 +34,8 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	fetch_by_users_id(a_id:INTEGER)
+			-- Fetch in the database the {USER} identified by `a_id'
+			-- You can get the resulting {USER} with `item'
 		do
 			execute_fetch(
 							{STRING_32} "select * from " + users_laboratories_table_name +
@@ -43,6 +45,9 @@ feature -- Access
 		end
 
 	update_users(a_laboratory:LABORATORY; a_users:ITERABLE[USER])
+			-- Put in the database every `a_users' in `a_laboratory'
+			-- Every other {USER} already assiciated with `a_laboratory'
+			-- will be desassociated.
 		local
 			l_guest:USERS_LABORATORIES
 		do
@@ -85,6 +90,7 @@ feature {CONTROLLER} -- Implementation
 feature {NONE} -- Implementation
 
 	guest_delete:DB_CHANGE
+			-- Manage the deletion part of `update_users'
 
 	guest_store:STORAGE
 			-- To insert, update or delete a guest from the database

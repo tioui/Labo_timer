@@ -19,10 +19,10 @@ create {REPOSITORIES_SHARED}
 
 feature {NONE} -- Initialization
 
-	make(l_database_access:DATABASE_ACCESS)
+	make(a_database_access:DATABASE_ACCESS)
 			-- <Precursor>
 		do
-			Precursor {MODEL_REPOSITORY}(l_database_access)
+			Precursor {MODEL_REPOSITORY}(a_database_access)
 			create filler.make (selection, prototype.twin)
 			selection.set_action (filler)
 		end

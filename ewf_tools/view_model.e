@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {VIEW_MODEL}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Similar to a {MODEL} but addapted for a view"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 deferred class
 	VIEW_MODEL

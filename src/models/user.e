@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {USER}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Class that represent a person who interact with the system."
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 class
 	USER

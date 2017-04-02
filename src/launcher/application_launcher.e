@@ -1,11 +1,8 @@
 note
-	description: "[
-				Effective class for APPLICATION_LAUNCHER_I
-
-				You can put modification in this class
-			]"
-	date: "$Date: 2015-06-12 03:59:28 -0700 (Fri, 12 Jun 2015) $"
-	revision: "$Revision: 97466 $"
+	description: "Launch the Web application"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 class
 	APPLICATION_LAUNCHER [G -> WSF_EXECUTION create make end]

@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {ADMINISTRATOR_VIEW_MODEL}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "A {VIEW_MODEL} used to manage {ADMINISTRATOR}"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 class
 	ADMINISTRATOR_VIEW_MODEL

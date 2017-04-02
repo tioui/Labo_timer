@@ -147,10 +147,10 @@ feature {NONE} -- Implementation
 			-- Format String to get value from `date' field (to view)
 
 	Put_time_format_string: STRING_8 = "hh:mi:ss"
-			-- Format String to put value into `*_time' field (from view)
+			-- Format String to put value into `*_time' fields (from view)
 
 	Get_time_format_string: STRING_8 = "hh:[0]mi"
-			-- Format String to get value from `*_time' field (to view)
+			-- Format String to get value from `*_time' fields (to view)
 
 
 

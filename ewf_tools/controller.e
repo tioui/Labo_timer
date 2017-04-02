@@ -55,6 +55,8 @@ feature -- Access
 feature {NONE} -- Implementation
 
 	initialize_template(a_template:TEMPLATE_FILE; a_request: WSF_REQUEST)
+			-- Initialize the common values in `a_template'.
+			-- `a_request' is used to get the script url
 		do
 			a_template.add_value (a_request.script_url (""), "script_url")
 		end
@@ -122,25 +124,25 @@ feature {NONE} -- Implementation
 			Result.put_string (a_request.request_uri + ": Argument needed.")
 		end
 
-	unsupported_method_response (a_request: WSF_REQUEST; is_get_method, is_post_method:BOOLEAN): WSF_PAGE_RESPONSE
+	unsupported_method_response (a_request: WSF_REQUEST; a_is_get_method, a_is_post_method:BOOLEAN): WSF_PAGE_RESPONSE
 			-- Page to show when the method of `a_request' is not valid. This `a_request' manage only a GET method
-			-- when `is_get_method' is set and POST method when `is_post_method' is set.
+			-- when `a_is_get_method' is set and POST method when `a_is_post_method' is set.
 		local
 			l_methods:STRING_8
 		do
 			create Result.make
 			Result.set_status_code ({HTTP_STATUS_CODE}.bad_request)
 			create l_methods.make_empty
-			if is_get_method then
+			if a_is_get_method then
 				l_methods.append ("GET")
 			end
-			if is_post_method then
+			if a_is_post_method then
 				if not l_methods.is_empty then
 					l_methods.append (" and ")
 				end
 				l_methods.append ("POST")
 			end
-			if not is_get_method and not is_post_method then
+			if not a_is_get_method and not a_is_post_method then
 				l_methods.append ("no")
 			end
 			Result.put_string (a_request.request_uri + " only support: " + l_methods + " methods; " + a_request.request_method + " is not supported.")

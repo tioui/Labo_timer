@@ -17,6 +17,8 @@ create
 feature {NONE} -- Initialization
 
 	make(a_session_manager:WSF_SESSION_MANAGER; a_user_repository:MODEL_REPOSITORY)
+			-- Initialization of `Current' using `a_session_manager' as `session_manager'
+			-- and `a_user_repository' as `user_repository'
 		do
 			user_repository := a_user_repository
 			session_manager := a_session_manager
@@ -81,6 +83,7 @@ feature {NONE} -- Implementation
 		end
 
 	session_name:READABLE_STRING_8
+			-- The name of the created `session'
 		once
 			Result := "login"
 		end

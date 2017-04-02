@@ -28,10 +28,10 @@ feature -- Access
 	id: INTEGER
 			-- Unique identifier of `Current'
 
-	is_equal (other: like Current): BOOLEAN
+	is_equal (a_other: like Current): BOOLEAN
 			-- <Precursor>
 		do
-			Result := id = other.id
+			Result := id = a_other.id
 		end
 
 	out_32: STRING_32

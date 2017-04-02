@@ -28,6 +28,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	connect
+			-- Connect the `database_session'
 		require
 			Not_Connected: not database_session.is_connected
 			Has_Base: database_session.is_database_set

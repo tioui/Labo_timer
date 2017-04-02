@@ -10,26 +10,31 @@ deferred class
 feature {NONE} -- Initialiation
 
 	users_table_name:STRING_32
+			-- Database table containing {USER} data
 		once
 			Result := {STRING_32} "users"
 		end
 
 	administrators_table_name:STRING_32
+			-- Database table containing {ADMINISTRATOR} data
 		once
 			Result := {STRING_32} "administrators"
 		end
 
 	users_laboratories_table_name:STRING_32
+			-- Database table containing the association {USER} in {LABORATORY}
 		once
 			Result := {STRING_32} "guests"
 		end
 
 	laboratories_table_name:STRING_32
+			-- Database table containing {LABORATORY} data
 		once
 			Result := {STRING_32} "laboratories"
 		end
 
 	interventions_table_name:STRING_32
+			-- Database table containing {INTERVENTION} data
 		once
 			Result := {STRING_32} "intervention"
 		end

@@ -1,9 +1,8 @@
 note
-	description: "[
-				application execution
-			]"
-	date: "$Date: 2016-10-21 10:45:18 -0700 (Fri, 21 Oct 2016) $"
-	revision: "$Revision: 99331 $"
+	description: "Used to route Web request (URI) to the correct {CONTROLLER}"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 class
 	LABO_TIMER_ROUTER
@@ -50,7 +49,7 @@ feature -- Router
 	setup_router
 			-- Setup `router'
 		local
-			fhdl: WSF_FILE_SYSTEM_HANDLER
+			l_file_handler: WSF_FILE_SYSTEM_HANDLER
 		do
 
 			map_uris_template (<<"", "/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
@@ -67,12 +66,13 @@ feature -- Router
 			map_crud("users", create {USERS_CONTROLLER})
 			map_crud("administrators", create {ADMINISTRATORS_CONTROLLER})
 
-			create fhdl.make_hidden ("www")
-			fhdl.set_directory_index (<<"index.html">>)
-			router.handle ("/www", fhdl, router.methods_GET)
+			create l_file_handler.make_hidden ("www")
+			l_file_handler.set_directory_index (<<"index.html">>)
+			router.handle ("/www", l_file_handler, router.methods_GET)
 		end
 
 	map_crud(a_name:STRING_8; a_handler: WSF_URI_TEMPLATE_HANDLER)
+			-- Map a standard CRUD router line
 		do
 			map_uris_template (<<"/" + a_name, "/" + a_name + "/">>, a_handler, router.methods_GET_POST)
 			map_uris_template (<<"/" + a_name + "/{type}", "/" + a_name + "/{type}/">>, a_handler, router.methods_GET_POST)
@@ -80,6 +80,7 @@ feature -- Router
 		end
 
 	map_uris_template(a_templates: ARRAY[STRING_8]; a_handler: WSF_URI_TEMPLATE_HANDLER; a_request_methods: detachable WSF_REQUEST_METHODS)
+			-- Map `a_templates' router lines to `a_handler' handeling `a_request_methods'
 		do
 			across create {ARRAYED_LIST[STRING_8]}.make_from_array (a_templates) as la_templates loop
 				map_uri_template (la_templates.item, a_handler, a_request_methods)

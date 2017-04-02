@@ -77,6 +77,7 @@ feature -- Access
 		end
 
 	set_user(a_user:USER)
+			-- Assign `user' with the value of `a_user'
 		require
 			Is_In_Database:a_user.id > 0
 		do
@@ -91,6 +92,7 @@ feature -- Access
 		end
 
 	set_laboratory(a_laboratory:LABORATORY)
+			-- Assign `laboratory' with the value of `a_laboratory'
 		require
 			Is_In_Database:a_laboratory.id > 0
 		do
@@ -154,6 +156,7 @@ feature {NONE} -- Implementation
 		end
 
 	Default_time_format: STRING_8 = "hh12:[0]mi:[0]ss.ff3 AM"
+			-- Format String to put value into `*_time' fields
 
 invariant
 	Is_User_Id_Valid: attached user as la_user implies la_user.id = guests_users_id

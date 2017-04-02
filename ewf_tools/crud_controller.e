@@ -1,8 +1,11 @@
 note
-	description: "Summary description for {CRUD_CONTROLLER}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "[
+				A {CONTROLLER} that manage the create, read,
+				update and delete of a {MODEL}
+			]"
+	author: "Louis Marchand"
+	date: "Sun, 02 Apr 2017 21:53:15 +0000"
+	revision: "0.1"
 
 deferred class
 	CRUD_CONTROLLER
