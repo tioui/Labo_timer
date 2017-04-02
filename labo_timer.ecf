@@ -36,7 +36,10 @@
 				<cluster name="any_launcher" location="$|any\"/>
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
-			<cluster name="models" location="$|models\"/>
+			<cluster name="models" location="$|models\">
+				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
+				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
 	</target>
@@ -73,7 +76,10 @@
 				<cluster name="default_launcher" location="$|default\"/>
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
-			<cluster name="models" location="$|models\"/>
+			<cluster name="models" location="$|models\">
+				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
+				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
 	</target>
@@ -88,7 +94,10 @@
 				<cluster name="default_launcher" location="$|default\"/>
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
-			<cluster name="models" location="$|models\"/>
+			<cluster name="models" location="$|models\">
+				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
+				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
 	</target>

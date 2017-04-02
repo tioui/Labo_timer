@@ -11,6 +11,7 @@ class
 inherit
 	WSF_FILTERED_ROUTED_EXECUTION
 	WSF_ROUTED_URI_TEMPLATE_HELPER
+	CONFIGURATION_SHARED
 
 
 create
@@ -66,7 +67,11 @@ feature -- Router
 			map_crud("users", create {USERS_CONTROLLER})
 			map_crud("administrators", create {ADMINISTRATORS_CONTROLLER})
 
-			create l_file_handler.make_hidden ("www")
+			if attached {READABLE_STRING_GENERAL} configurations.at ("public_directory") as la_public_directory then
+				create l_file_handler.make_hidden (la_public_directory)
+			else
+				create l_file_handler.make_hidden ("www")
+			end
 			l_file_handler.set_directory_index (<<"index.html">>)
 			router.handle ("/www", l_file_handler, router.methods_GET)
 		end
