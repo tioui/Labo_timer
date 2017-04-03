@@ -10,12 +10,30 @@ function checkRaised(open_url) {
 	xhttp.onreadystatechange = function() {
  		if (this.readyState == 4 && this.status == 200) {
 			if (this.responseText === "1") {
-				document.getElementsByName("hand")[0].style.display = "none";
-				document.getElementsByName("raised")[0].style.display = "";
+				document.getElementById("hand").style.display = "none";
+				document.getElementById("raised").style.display = "";
 			} else {
-				document.getElementsByName("hand")[0].style.display = "";
-				document.getElementsByName("raised")[0].style.display = "none";
+				document.getElementById("hand").style.display = "";
+				document.getElementById("raised").style.display = "none";
 			}
+		}
+	};
+	xhttp.open("GET", open_url, true);
+	xhttp.send();
+}
+
+function update_nb_interventions(open_url) {
+	var xhttp;
+	if (window.XMLHttpRequest) {
+		// code for modern browsers
+		xhttp = new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("nb_interventions").innerHTML = this.responseText;
 		}
 	};
 	xhttp.open("GET", open_url, true);

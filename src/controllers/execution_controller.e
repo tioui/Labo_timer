@@ -32,6 +32,7 @@ feature {NONE} -- Initialization
 			response_method_map.put ([agent guest_raise_get, void], "raise")
 			response_method_map.put ([agent guest_lower_get, void], "lower")
 			response_method_map.put ([agent guest_is_raised_get, void], "is_raised")
+			response_method_map.put ([agent guest_nb_interventions_get, void], "nb_interventions")
 			response_method_map.put ([agent admin_get, void], "admin")
 		end
 
@@ -42,7 +43,6 @@ feature {NONE} -- Implementation
 			-- Manage the GET `a_request' of the execution guest view page
 		local
 			l_template:TEMPLATE_FILE
-			l_count:INTEGER
 		do
 			if attached request_model_id (a_request) as la_id then
 				laboratories_repository.fetch_by_id (la_id.item)
@@ -55,13 +55,7 @@ feature {NONE} -- Implementation
 							if has_intervention(la_user, la_laboratory)  then
 								l_template.add_value (True, "is_raised")
 							end
-							l_count := 0
-							across la_laboratory.interventions as la_interventions loop
-								if la_interventions.item.start_time > la_interventions.item.end_time then
-									l_count := l_count + 1
-								end
-							end
-							l_template.add_value (l_count, "nb_questions")
+							l_template.add_value (nb_interventions(la_laboratory), "nb_interventions")
 							create {HTML_TEMPLATE_PAGE_RESPONSE} Result.make(l_template)
 						else
 							Result := argument_not_valid_response (a_request, la_laboratory.id.out)
@@ -83,16 +77,77 @@ feature {NONE} -- Implementation
 		local
 			l_result:INTEGER
 		do
+			if attached request_model_id (a_request) as la_id then
+				laboratories_repository.fetch_by_id (la_id.item)
+				if attached  laboratories_repository.item as la_laboratory then
+					if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
+						if la_laboratory.is_presently_executing and has_intervention(la_user, la_laboratory)  then
+							l_result := 1
+						else
+							l_result := 0
+						end
+						create {WSF_PAGE_RESPONSE} Result.make_with_body (l_result.out)
+					else
+						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+					end
+				else
+					Result := object_not_found (a_request)
+				end
+			else
+				Result := argument_not_found_response (a_request)
+			end
+		end
+
+	guest_nb_interventions_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
+			-- Manage the ajax GET `a_request' to get the number of interventions.
+		do
+			if attached request_model_id (a_request) as la_id then
+				laboratories_repository.fetch_by_id (la_id.item)
+				if attached  laboratories_repository.item as la_laboratory then
+					if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
+						create {WSF_PAGE_RESPONSE} Result.make_with_body (nb_interventions(la_laboratory).out)
+					else
+						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+					end
+				else
+					Result := object_not_found (a_request)
+				end
+			else
+				Result := argument_not_found_response (a_request)
+			end
+		end
+
+	nb_interventions(a_laboratory:LABORATORY):INTEGER
+			--The number of active intervention in `a_laboratory'
+		do
+			Result := 0
+			across a_laboratory.interventions as la_interventions loop
+				if la_interventions.item.start_time > la_interventions.item.end_time then
+					Result := Result + 1
+				end
+			end
+		end
+
+	guest_raise_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
+			-- Manage the GET `a_request' when a guest is raising hand
+		local
+			l_intervention:INTERVENTION
+		do
 				if attached request_model_id (a_request) as la_id then
 					laboratories_repository.fetch_by_id (la_id.item)
 					if attached  laboratories_repository.item as la_laboratory then
 						if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
-									if la_laboratory.is_presently_executing and has_intervention(la_user, la_laboratory)  then
-										l_result := 1
-									else
-										l_result := 0
-									end
-									create {WSF_PAGE_RESPONSE} Result.make_with_body (l_result.out)
+							if la_laboratory.is_presently_executing then
+								if not has_intervention(la_user, la_laboratory)  then
+									create l_intervention
+									l_intervention.set_laboratory (la_laboratory)
+									l_intervention.set_user (la_user)
+									l_intervention.save
+								end
+								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory.id.out))
+							else
+								Result := argument_not_valid_response (a_request, la_laboratory.id.out)
+							end
 						else
 							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
 						end
@@ -104,37 +159,6 @@ feature {NONE} -- Implementation
 				end
 		end
 
-	guest_raise_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
-			-- Manage the GET `a_request' when a guest is raising hand
-		local
-			l_intervention:INTERVENTION
-		do
-			if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
-				if attached request_model_id (a_request) as la_id then
-					laboratories_repository.fetch_by_id (la_id.item)
-					if attached  laboratories_repository.item as la_laboratory then
-						if la_laboratory.is_presently_executing then
-							if not has_intervention(la_user, la_laboratory)  then
-								create l_intervention
-								l_intervention.set_laboratory (la_laboratory)
-								l_intervention.set_user (la_user)
-								l_intervention.save
-							end
-							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/2"))
-						else
-							Result := argument_not_valid_response (a_request, la_laboratory.id.out)
-						end
-					else
-						Result := object_not_found (a_request)
-					end
-				else
-					Result := argument_not_found_response (a_request)
-				end
-			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/2"))
-			end
-		end
-
 	guest_lower_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
 			-- Manage the GET `a_request' when a guest is lowering hand
 		local
@@ -142,37 +166,40 @@ feature {NONE} -- Implementation
 			l_found:BOOLEAN
 			l_now:TIME
 		do
-			if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
 				if attached request_model_id (a_request) as la_id then
 					laboratories_repository.fetch_by_id (la_id.item)
 					if attached  laboratories_repository.item as la_laboratory then
-						if la_laboratory.is_presently_executing then
-							l_interventions := la_laboratory.interventions
-							from
-								l_interventions.start
-								l_found := False
-							until
-								l_interventions.exhausted or
-								l_found
-							loop
-								if
-									attached l_interventions.item.user as la_intervention_user and then
-									(la_intervention_user.id = la_user.id and
-									l_interventions.item.start_time > l_interventions.item.end_time)
-								then
-									create l_now.make_now
-									if l_now <= l_interventions.item.start_time then
-										l_interventions.item.set_start_time (l_now + create {TIME_DURATION}.make (0, 0, -1))
+						if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
+							if la_laboratory.is_presently_executing then
+								l_interventions := la_laboratory.interventions
+								from
+									l_interventions.start
+									l_found := False
+								until
+									l_interventions.exhausted or
+									l_found
+								loop
+									if
+										attached l_interventions.item.user as la_intervention_user and then
+										(la_intervention_user.id = la_user.id and
+										l_interventions.item.start_time > l_interventions.item.end_time)
+									then
+										create l_now.make_now
+										if l_now <= l_interventions.item.start_time then
+											l_interventions.item.set_start_time (l_now + create {TIME_DURATION}.make (0, 0, -1))
+										end
+										l_interventions.item.set_end_time (l_now)
+										l_interventions.item.save
+										l_found := True
 									end
-									l_interventions.item.set_end_time (l_now)
-									l_interventions.item.save
-									l_found := True
+									l_interventions.forth
 								end
-								l_interventions.forth
+								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory.id.out))
+							else
+								Result := argument_not_valid_response (a_request, la_laboratory.id.out)
 							end
-							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/2"))
 						else
-							Result := argument_not_valid_response (a_request, la_laboratory.id.out)
+							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
 						end
 					else
 						Result := object_not_found (a_request)
@@ -180,9 +207,6 @@ feature {NONE} -- Implementation
 				else
 					Result := argument_not_found_response (a_request)
 				end
-			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/2"))
-			end
 		end
 
 	has_intervention(a_user:USER; a_laboratory:LABORATORY):BOOLEAN
