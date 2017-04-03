@@ -75,7 +75,7 @@ feature {NONE} -- Initialization
 			-- Manage the GET `a_request' of the 'login' page
 		do
 			if attached administrator_cookie_manager.login_user (a_request) then
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/"))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/laboratories/list"))
 			else
 				Result := login_with_error(a_request, False)
 			end
