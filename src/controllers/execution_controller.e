@@ -211,7 +211,7 @@ feature {NONE} -- Implementation
 							initialize_template (l_template, a_request)
 							l_template.add_value (la_laboratory, "laboratory")
 							l_template.add_value (a_request.absolute_script_url ("/labo/" + la_laboratory.id.out), "participations_link")
-							l_template.add_value (table_interventions_table(la_laboratory), "table_interventions")
+							l_template.add_value (table_interventions_table(a_request, la_laboratory), "table_interventions")
 							create {HTML_TEMPLATE_PAGE_RESPONSE} Result.make(l_template)
 						else
 							Result := object_not_found (a_request)
@@ -237,7 +237,7 @@ feature {NONE} -- Implementation
 					if attached  laboratories_repository.item as la_laboratory then
 						create l_utf_converter
 
-						l_interventions_table := table_interventions_table(la_laboratory)
+						l_interventions_table := table_interventions_table(a_request, la_laboratory)
 						create {WSF_PAGE_RESPONSE} Result.make_with_body (l_utf_converter.string_32_to_utf_8_string_8 (l_interventions_table))
 					else
 						Result := argument_not_valid_response (a_request, la_id.item.out)
@@ -290,13 +290,14 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	table_interventions_table(a_laboratory:LABORATORY):STRING_8
+	table_interventions_table(a_request: WSF_REQUEST; a_laboratory:LABORATORY):STRING_8
 			-- Generate the view table of `a_laboratory'.`intervention'
 		local
 			l_template:TEMPLATE_FILE
 			l_interventions:ARRAYED_LIST[INTERVENTION_VIEW_MODEL]
 		do
 			create l_template.make_from_file (views_path + "/labo_admin_table.tpl")
+			initialize_template (l_template, a_request)
 			create l_interventions.make (a_laboratory.interventions.count)
 			across a_laboratory.interventions as la_interventions loop
 				if la_interventions.item.start_time > la_interventions.item.end_time then
