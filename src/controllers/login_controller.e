@@ -21,6 +21,10 @@ inherit
 		undefine
 			default_create
 		end
+	VIEWS_SHARED
+		undefine
+			default_create
+		end
 
 feature {NONE} -- Initialization
 
@@ -82,7 +86,7 @@ feature {NONE} -- Initialization
 		local
 			l_template:TEMPLATE_FILE
 		do
-			create l_template.make_from_file ("views/login.tpl")
+			create l_template.make_from_file (views_path + "/login.tpl")
 			initialize_template (l_template, a_request)
 			if a_error then
 				l_template.add_value (True, "has_error")
@@ -149,7 +153,7 @@ feature {NONE} -- Initialization
 		local
 			l_template:TEMPLATE_FILE
 		do
-			create l_template.make_from_file ("views/login_labo.tpl")
+			create l_template.make_from_file (views_path + "/login_labo.tpl")
 			initialize_template (l_template, a_request)
 			if a_error then
 				l_template.add_value (True, "has_error")

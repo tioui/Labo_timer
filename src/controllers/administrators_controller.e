@@ -20,6 +20,10 @@ inherit
 		undefine
 			default_create
 		end
+	VIEWS_SHARED
+		undefine
+			default_create
+		end
 
 feature {NONE} -- Implementation
 

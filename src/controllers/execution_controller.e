@@ -16,6 +16,10 @@ inherit
 		undefine
 			default_create
 		end
+	VIEWS_SHARED
+		undefine
+			default_create
+		end
 
 feature {NONE} -- Initialization
 
@@ -45,7 +49,7 @@ feature {NONE} -- Implementation
 					laboratories_repository.fetch_by_id (la_id.item)
 					if attached  laboratories_repository.item as la_laboratory then
 						if la_laboratory.is_presently_executing then
-							create l_template.make_from_file ("views/labo_exec.tpl")
+							create l_template.make_from_file (views_path + "/labo_exec.tpl")
 							initialize_template (l_template, a_request)
 							l_template.add_value (la_laboratory, "laboratory")
 							if has_intervention(la_user, la_laboratory)  then
@@ -204,7 +208,7 @@ feature {NONE} -- Implementation
 					if attached request_model_id (a_request) as la_id then
 						laboratories_repository.fetch_by_id (la_id.item)
 						if attached  laboratories_repository.item as la_laboratory then
-							create l_template.make_from_file ("views/labo_admin.tpl")
+							create l_template.make_from_file (views_path + "/labo_admin.tpl")
 							initialize_template (l_template, a_request)
 							l_template.add_value (la_laboratory, "laboratory")
 							l_template.add_value (a_request.absolute_script_url ("/labo/" + la_laboratory.id.out), "participations_link")
@@ -293,7 +297,7 @@ feature {NONE} -- Implementation
 			l_template:TEMPLATE_FILE
 			l_interventions:ARRAYED_LIST[INTERVENTION_VIEW_MODEL]
 		do
-			create l_template.make_from_file ("views/labo_admin_table.tpl")
+			create l_template.make_from_file (views_path + "/labo_admin_table.tpl")
 			create l_interventions.make (a_laboratory.interventions.count)
 			across a_laboratory.interventions as la_interventions loop
 				if la_interventions.item.start_time > la_interventions.item.end_time then

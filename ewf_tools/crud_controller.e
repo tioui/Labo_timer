@@ -12,6 +12,8 @@ deferred class
 
 inherit
 	CONTROLLER
+		rename
+			view_path_extension as view_path_sufix
 		redefine
 			default_create
 		end
@@ -78,13 +80,7 @@ feature {NONE} -- Implementation
 	view_path_prefix:READABLE_STRING_GENERAL
 			-- The name of a collection of {MODEL} used in `Current'
 		do
-			Result := "views/" + model_name + "_"
-		end
-
-	view_path_sufix:READABLE_STRING_GENERAL
-			-- The name of a collection of {MODEL} used in `Current'
-		do
-			Result := ".tpl"
+			Result := views_path + "/" + model_name + "_"
 		end
 
 	list_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE

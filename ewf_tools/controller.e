@@ -54,6 +54,17 @@ feature -- Access
 
 feature {NONE} -- Implementation
 
+	views_path:READABLE_STRING_GENERAL
+			-- The path of the views directory
+		deferred
+		end
+
+	view_path_extension:READABLE_STRING_GENERAL
+			-- The extension of the path templates
+		do
+			Result := ".tpl"
+		end
+
 	initialize_template(a_template:TEMPLATE_FILE; a_request: WSF_REQUEST)
 			-- Initialize the common values in `a_template'.
 			-- `a_request' is used to get the script url
