@@ -83,25 +83,25 @@ feature {NONE} -- Implementation
 		local
 			l_result:INTEGER
 		do
-			if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
 				if attached request_model_id (a_request) as la_id then
 					laboratories_repository.fetch_by_id (la_id.item)
 					if attached  laboratories_repository.item as la_laboratory then
-						if la_laboratory.is_presently_executing and has_intervention(la_user, la_laboratory)  then
-							l_result := 1
+						if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
+									if la_laboratory.is_presently_executing and has_intervention(la_user, la_laboratory)  then
+										l_result := 1
+									else
+										l_result := 0
+									end
+									create {WSF_PAGE_RESPONSE} Result.make_with_body (l_result.out)
 						else
-							l_result := 0
+							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
 						end
-						create {WSF_PAGE_RESPONSE} Result.make_with_body (l_result.out)
 					else
 						Result := object_not_found (a_request)
 					end
 				else
 					Result := argument_not_found_response (a_request)
 				end
-			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/2"))
-			end
 		end
 
 	guest_raise_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
