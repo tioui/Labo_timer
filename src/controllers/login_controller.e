@@ -106,7 +106,7 @@ feature {NONE} -- Initialization
 					la_user.fill_administrator (l_administrator)
 					if l_administrator.password.to_string_32 ~ la_administrator.password.to_string_32 then
 						new_connected_administrator := la_administrator
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/"))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/laboratories/list"))
 					else
 						Result := login_with_error(a_request, True)
 					end
@@ -121,7 +121,7 @@ feature {NONE} -- Initialization
 	logout_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
 			-- Manage the GET `a_request' of the 'logout' functionnality
 		do
-			create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/"))
+			create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/laboratories/list"))
 		end
 
 	login_labo_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
