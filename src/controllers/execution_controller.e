@@ -305,6 +305,7 @@ feature {NONE} -- Implementation
 				end
 			end
 			l_template.add_value (l_interventions, "interventions")
+			l_template.add_value (a_laboratory, "laboratory")
 			l_template.analyze
 			l_template.get_output
 			if attached l_template.output as la_output then
