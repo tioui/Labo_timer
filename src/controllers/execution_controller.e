@@ -44,10 +44,10 @@ feature {NONE} -- Implementation
 			l_template:TEMPLATE_FILE
 			l_count:INTEGER
 		do
-			if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
-				if attached request_model_id (a_request) as la_id then
-					laboratories_repository.fetch_by_id (la_id.item)
-					if attached  laboratories_repository.item as la_laboratory then
+			if attached request_model_id (a_request) as la_id then
+				laboratories_repository.fetch_by_id (la_id.item)
+				if attached  laboratories_repository.item as la_laboratory then
+					if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
 						if la_laboratory.is_presently_executing then
 							create l_template.make_from_file (views_path + "/labo_exec.tpl")
 							initialize_template (l_template, a_request)
@@ -66,15 +66,14 @@ feature {NONE} -- Implementation
 						else
 							Result := argument_not_valid_response (a_request, la_laboratory.id.out)
 						end
-
 					else
-						Result := object_not_found (a_request)
+						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
 					end
 				else
-					Result := argument_not_found_response (a_request)
+					Result := object_not_found (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/2"))
+				Result := argument_not_found_response (a_request)
 			end
 		end
 
