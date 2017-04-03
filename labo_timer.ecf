@@ -37,8 +37,8 @@
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
 			<cluster name="models" location="$|models\">
-				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
-				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+				<cluster name="view_models" location="$|view_models\"/>
+				<cluster name="join_tables" location="$|join_table\"/>
 			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
@@ -59,8 +59,8 @@
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
 			<cluster name="models" location="$|models\">
-				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
-				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+				<cluster name="view_models" location="$|view_models\"/>
+				<cluster name="join_tables" location="$|join_table\"/>
 			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
@@ -77,8 +77,8 @@
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
 			<cluster name="models" location="$|models\">
-				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
-				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+				<cluster name="view_models" location="$|view_models\"/>
+				<cluster name="join_tables" location="$|join_table\"/>
 			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
@@ -95,8 +95,8 @@
 			</cluster>
 			<cluster name="controllers" location="$|controllers\"/>
 			<cluster name="models" location="$|models\">
-				<cluster name="view_models" location="\home\louis\prog\labo_timer\src\models\view_models\"/>
-				<cluster name="join_tables" location="\home\louis\prog\labo_timer\src\models\join_table\"/>
+				<cluster name="view_models" location="$|view_models\"/>
+				<cluster name="join_tables" location="$|join_table\"/>
 			</cluster>
 			<cluster name="repositories" location="$|repositories\"/>
 		</cluster>
