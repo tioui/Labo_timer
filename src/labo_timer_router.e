@@ -51,21 +51,29 @@ feature -- Router
 			-- Setup `router'
 		local
 			l_file_handler: WSF_FILE_SYSTEM_HANDLER
+			l_prefix:STRING_8
 		do
-
-			map_uris_template (<<"", "/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/log", "/log/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/log/{type}", "/log/{type}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/log/{type}/{model_id}", "/log/{type}/{model_id}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
-			map_crud("laboratories", create {LABORATORIES_CONTROLLER})
-			map_uris_template (<<"/laboratories/{type}/{model_id}/{sub_type}", "/laboratories/{type}/{model_id}/{sub_type}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}", "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/labo/{model_id}", "/labo/{model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/labo/{model_id}/{type}", "/labo/{model_id}/{type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/labo/{model_id}/{type}/{sub_type}/{sub_model_id}", "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<"/labo/{model_id}/{type}/{sub_type}", "/labo/{model_id}/{type}/{sub_type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
-			map_crud("users", create {USERS_CONTROLLER})
-			map_crud("administrators", create {ADMINISTRATORS_CONTROLLER})
+			if
+				attached {READABLE_STRING_GENERAL} configurations.at ("uri_prefix") as la_uri_prefix and then
+				la_uri_prefix.is_string_8
+			then
+				l_prefix := la_uri_prefix.to_string_8
+			else
+				l_prefix := ""
+			end
+			map_uris_template (<<l_prefix, l_prefix + "/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/log", l_prefix + "/log/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/log/{type}", l_prefix + "/log/{type}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/log/{type}/{model_id}", l_prefix + "/log/{type}/{model_id}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/laboratories/{type}/{model_id}/{sub_type}", l_prefix + "/laboratories/{type}/{model_id}/{sub_type}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}", l_prefix + "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/labo/{model_id}", l_prefix + "/labo/{model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}", l_prefix + "/labo/{model_id}/{type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}", l_prefix + "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}/{sub_type}", l_prefix + "/labo/{model_id}/{type}/{sub_type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_crud(l_prefix, "laboratories", create {LABORATORIES_CONTROLLER})
+			map_crud(l_prefix, "users", create {USERS_CONTROLLER})
+			map_crud(l_prefix, "administrators", create {ADMINISTRATORS_CONTROLLER})
 
 			if attached {READABLE_STRING_GENERAL} configurations.at ("public_directory") as la_public_directory then
 				create l_file_handler.make_hidden (la_public_directory)
@@ -73,15 +81,15 @@ feature -- Router
 				create l_file_handler.make_hidden ("www")
 			end
 			l_file_handler.set_directory_index (<<"index.html">>)
-			router.handle ("/www", l_file_handler, router.methods_GET)
+			router.handle (l_prefix + "/www", l_file_handler, router.methods_GET)
 		end
 
-	map_crud(a_name:STRING_8; a_handler: WSF_URI_TEMPLATE_HANDLER)
+	map_crud(a_prefix, a_name:STRING_8; a_handler: WSF_URI_TEMPLATE_HANDLER)
 			-- Map a standard CRUD router line
 		do
-			map_uris_template (<<"/" + a_name, "/" + a_name + "/">>, a_handler, router.methods_GET_POST)
-			map_uris_template (<<"/" + a_name + "/{type}", "/" + a_name + "/{type}/">>, a_handler, router.methods_GET_POST)
-			map_uris_template (<<"/" + a_name + "/{type}/{model_id}", "/" + a_name + "/{type}/{model_id}/">>, a_handler, router.methods_GET_POST)
+			map_uris_template (<<a_prefix + "/" + a_name, a_prefix + "/" + a_name + "/">>, a_handler, router.methods_GET_POST)
+			map_uris_template (<<a_prefix + "/" + a_name + "/{type}", a_prefix + "/" + a_name + "/{type}/">>, a_handler, router.methods_GET_POST)
+			map_uris_template (<<a_prefix + "/" + a_name + "/{type}/{model_id}", a_prefix + "/" + a_name + "/{type}/{model_id}/">>, a_handler, router.methods_GET_POST)
 		end
 
 	map_uris_template(a_templates: ARRAY[STRING_8]; a_handler: WSF_URI_TEMPLATE_HANDLER; a_request_methods: detachable WSF_REQUEST_METHODS)
