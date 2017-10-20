@@ -38,7 +38,8 @@ feature -- Access
 		require
 			Is_Connected: database_access.is_connected
 		do
-			execute_fetch_with_where_clause("where `user_name` = '" + a_user_name + "'")
+			fetch_with_and_where(<<["user_name", a_user_name]>>)
+--			execute_fetch_with_where_clause("where `user_name` = " + database_access.database_format.string_format_32 (a_user_name))
 		ensure
 			Fetched_Object_Valid: attached item as la_item implies la_item.user_name.same_string (a_user_name)
 		end
@@ -52,6 +53,18 @@ feature -- Access
 							{STRING_32} "select * from " + users_laboratories_table_name +
 							{STRING_32} " inner join " + users_table_name +
 							{STRING_32} " where `users_id` = `id` and `laboratories_id` = '" + a_id.out + {STRING_32} "' "
+						)
+		end
+
+	fetch_by_group_id(a_id:INTEGER)
+			-- Fetch every {USER} associated with the {GROUP}
+			-- having the identifier `a_id'
+			-- Result can be retreived with `items'
+		do
+			execute_fetch(
+							{STRING_32} "select * from " + groups_users_table_name +
+							{STRING_32} " inner join " + users_table_name +
+							{STRING_32} " where `users_id` = `id` and `groups_id` = '" + a_id.out + {STRING_32} "' "
 						)
 		end
 

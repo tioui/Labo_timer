@@ -20,6 +20,8 @@ feature {NONE} -- Initialization
 
 	make(a_database_access:DATABASE_ACCESS)
 			-- Initialization of `Current' using `a_database_access' as database manager
+		require
+			Is_Set: a_database_access.is_database_set
 		do
 			make_repository(a_database_access, <<"id">>)
 		end
@@ -31,7 +33,8 @@ feature -- Access
 		require
 			Is_Connected: database_access.is_connected
 		do
-			execute_fetch_with_where_clause("where id = '" +a_id.out + "'")
+			fetch_with_and_where(<<["id", a_id]>>)
+--			execute_fetch_with_where_clause("where id = '" +a_id.out + "'")
 		ensure
 			Fetched_Object_Valid: attached item as la_item implies la_item.id = a_id
 		end

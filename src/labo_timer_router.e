@@ -67,12 +67,15 @@ feature -- Router
 			map_uris_template (<<l_prefix + "/log/{type}/{model_id}", l_prefix + "/log/{type}/{model_id}/">>, create {LOGIN_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<l_prefix + "/laboratories/{type}/{model_id}/{sub_type}", l_prefix + "/laboratories/{type}/{model_id}/{sub_type}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<l_prefix + "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}", l_prefix + "/laboratories/{type}/{model_id}/{sub_type}/{sub_model_id}/">>, create {LABORATORIES_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/groups/{type}/{model_id}/{sub_type}", l_prefix + "/groups/{type}/{model_id}/{sub_type}/">>, create {GROUPS_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/groups/{type}/{model_id}/{sub_type}/{sub_model_id}", l_prefix + "/groups/{type}/{model_id}/{sub_type}/{sub_model_id}/">>, create {GROUPS_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<l_prefix + "/labo/{model_id}", l_prefix + "/labo/{model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}", l_prefix + "/labo/{model_id}/{type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
-			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}", l_prefix + "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
+			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}", l_prefix + "/labo/{model_id}/{type}/{sub_type}/{sub_model_id}/">>, create {GROUPS_CONTROLLER}, router.methods_GET_POST)
 			map_uris_template (<<l_prefix + "/labo/{model_id}/{type}/{sub_type}", l_prefix + "/labo/{model_id}/{type}/{sub_type}/">>, create {EXECUTION_CONTROLLER}, router.methods_GET_POST)
 			map_crud(l_prefix, "laboratories", create {LABORATORIES_CONTROLLER})
 			map_crud(l_prefix, "users", create {USERS_CONTROLLER})
+			map_crud(l_prefix, "groups", create {GROUPS_CONTROLLER})
 			map_crud(l_prefix, "administrators", create {ADMINISTRATORS_CONTROLLER})
 
 			if attached {READABLE_STRING_GENERAL} configurations.at ("public_directory") as la_public_directory then

@@ -25,6 +25,12 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
+	is_connected:BOOLEAN
+			-- `Current' is conected to a database
+		do
+			Result := repository.database_access.is_connected
+		end
+
 	id: INTEGER
 			-- Unique identifier of `Current'
 
@@ -53,7 +59,7 @@ feature -- Settings
 	save
 			-- Insert or update `Current' in the database
 		require
-			Is_Connected: repository.database_access.is_connected
+			Is_Connected: is_connected
 		do
 			if id = 0 then
 				repository.insert (Current)
@@ -67,17 +73,12 @@ feature -- Settings
 	delete
 			-- Remove `Current' from the Database
 		require
-			Is_Connected: repository.database_access.is_connected
+			Is_Connected: is_connected
 		do
 			if id /= 0 then
 				repository.delete (Current)
 				set_id (0)
 			end
-		end
-
-	repository:REPOSITORY
-			-- {REPOSITORY} managing object like `Current'
-		deferred
 		end
 
 feature {REPOSITORY, VIEW_MODEL} -- Implementation
@@ -88,6 +89,13 @@ feature {REPOSITORY, VIEW_MODEL} -- Implementation
 			id := a_id
 		ensure
 			id_set: a_id = id
+		end
+
+feature {NONE} -- Implementation
+
+	repository:REPOSITORY
+			-- {REPOSITORY} managing object like `Current'
+		deferred
 		end
 
 end

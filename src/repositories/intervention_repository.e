@@ -34,7 +34,8 @@ feature -- Access
 		require
 			Is_Connected: database_access.is_connected
 		do
-			execute_fetch_with_where_clause("where `guests_laboratories_id` = '" + a_laboratory_id.out + "'")
+			fetch_with_and_where(<<["guests_laboratories_id", a_laboratory_id]>>)
+--			execute_fetch_with_where_clause("where `guests_laboratories_id` = '" + a_laboratory_id.out + "'")
 		ensure
 			Fetched_Object_Valid: across items as la_items all attached la_items.item.laboratory as la_laboratory and then la_laboratory.id = a_laboratory_id end
 		end

@@ -32,6 +32,8 @@ feature -- Initialization
 			date := ""
 			start_time := ""
 			end_time := ""
+			is_presently_executing := False
+			is_pass := False
 		end
 
 	make(a_laboratory:LABORATORY)
@@ -44,6 +46,7 @@ feature -- Initialization
 			start_time := a_laboratory.start_date.formatted_out (Get_Time_format_string)
 			end_time := a_laboratory.end_date.formatted_out (Get_Time_format_string)
 			is_presently_executing := a_laboratory.is_presently_executing
+			is_pass := a_laboratory.is_pass
 		end
 
 feature -- Access
@@ -65,6 +68,9 @@ feature -- Access
 
 	is_presently_executing:BOOLEAN
 			-- `True' if `Current' is presently in execution
+
+	is_pass:BOOLEAN
+			-- `True' if `Current' is in the past
 
 	is_valid:BOOLEAN
 			-- <Precursor>

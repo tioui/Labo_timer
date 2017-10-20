@@ -36,6 +36,18 @@ feature {NONE} -- Initialiation
 	interventions_table_name:STRING_32
 			-- Database table containing {INTERVENTION} data
 		once
-			Result := {STRING_32} "intervention"
+			Result := {STRING_32} "interventions"
+		end
+
+	groups_table_name:STRING_32
+			-- Database table containing {GROUP} data
+		once
+			Result := {STRING_32} "groups"
+		end
+
+	groups_users_table_name:STRING_32
+			-- Database table containing the association {GROUP} in {USER}
+		once
+			Result := {STRING_32} "members"
 		end
 end

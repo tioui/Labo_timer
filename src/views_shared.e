@@ -21,7 +21,6 @@ feature {NONE} -- Implementation
 			else
 				Result := "./views"
 			end
-	--		template_context.set_template_folder (create {PATH}.make_from_string (Result))
 		end
 
 end

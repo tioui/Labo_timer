@@ -8,20 +8,24 @@ class
 	DATABASE_ACCESS
 
 inherit
-	DISPOSABLE
-		redefine
-			default_create
+	HANDLE_USE
+		export
+			{ANY} is_database_set
 		end
+	DISPOSABLE
 
 create
-	default_create
+	make
 
 feature {NONE} -- Initialization
 
-	default_create
+	make
 			-- Initialization of `Current'
+		require
+			Is_Set:is_database_set
 		do
 			create database_session.make
+			database_format := handle.database.db_format
 			create last_id_selector.make
 		end
 
@@ -47,6 +51,9 @@ feature -- Access
 
 	database_session: DB_CONTROL
 			-- Manage the connection session of the database
+
+	database_format:DATABASE_FORMAT[DATABASE]
+			-- Use to retreive database specific format
 
 	last_inserted_id:INTEGER
 			-- The unique autoincrement identifier of the last inserted object in the database.
@@ -82,5 +89,10 @@ feature {NONE} -- Implementation
 				database_session.disconnect
 			end
 		end
+
+feature -- Constants
+
+	Default_Query_allocation_size:INTEGER = 255
+			-- The number of character to initialize when crating query
 
 end

@@ -3,7 +3,8 @@
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Liste des invité du laboratoire {$laboratory.name/} du {$laboratory.date/} de {$laboratory.start_time/} à {$laboratory.end_time/}</H1>
-			<a href="{$script_url/}/laboratories/guest/{$laboratory.id/}/adding">Ajouter des invités</a>
+			<a href="{$script_url/}/laboratories/guest/{$laboratory.id/}/adding">Ajouter des invités</a>&nbsp |&nbsp
+			<a href="{$script_url/}/laboratories/guest/{$laboratory.id/}/adding_group">Ajouter un groupe</a>
 			<table class="table">
 				<tr>
 					<th>

@@ -141,11 +141,16 @@ feature -- Status report
 			l_now:DATE_TIME
 		do
 			create l_now.make_now
-			if l_now >= start_date and l_now <= end_date then
-				Result := True
-			else
-				Result := False
-			end
+			Result := l_now >= start_date and l_now <= end_date
+		end
+
+	is_pass:BOOLEAN
+			-- `True' if `Current' is in the past
+		local
+			l_now:DATE_TIME
+		do
+			create l_now.make_now
+			Result := l_now >= start_date and l_now >= end_date
 		end
 
 

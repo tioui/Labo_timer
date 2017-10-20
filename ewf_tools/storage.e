@@ -10,12 +10,6 @@ class
 inherit
 	HANDLE_USE
 
---inherit
---	DB_STORE
---		redefine
---			set_repository
---		end
-
 create
 	make_with_keys
 
@@ -25,7 +19,6 @@ feature {NONE} -- Initialization
 			-- Initialization of `Current' using `a_keys' as primary and secondary key
 			-- keys to uniquely identify database record from object
 		do
---			make
 			table_name := {STRING_32} ""
 			create db_insert.make
 			create db_update.make

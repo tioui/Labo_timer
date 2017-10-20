@@ -12,7 +12,7 @@ feature {NONE} -- Implementation
 	database_access:DATABASE_ACCESS
 			-- The database session manager
 		once
-			create Result
+			create Result.make
 		end
 
 end

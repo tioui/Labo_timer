@@ -3,7 +3,8 @@
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Liste des laboratoires</H1>
-			<a href="{$script_url/}/laboratories/create/">Créer un nouveau laboratoire</a>
+			<a href="{$script_url/}/laboratories/create/">Créer un nouveau laboratoire</a> | 
+			<a href="{$script_url/}/laboratories/export_all/">Exporter toutes les données de laboratoires</a>
 			<table class="table">
 				<tr>
 					<th>
@@ -42,7 +43,7 @@
 						{$laboratory.end_time/}
 					</td>
 					<td>
-						<a name="guest_list{$laboratory.id/}" href="{$script_url/}/laboratories/guest/{$laboratory.id/}/list/">Participants</a> | <a name="edit_link{$laboratory.id/}" href="{$script_url/}/laboratories/edit/{$laboratory.id/}/">Modifier</a> | <a name="delete_link{$laboratory.id/}" href="{$script_url/}/laboratories/remove/{$laboratory.id/}/">Supprimer</a>{if condition="$laboratory.is_presently_executing"} | <a name="Execution{$laboratory.id/}" href="{$script_url/}/labo/{$laboratory.id/}/admin">Exécution</a>{/if}
+						<a name="guest_list{$laboratory.id/}" href="{$script_url/}/laboratories/guest/{$laboratory.id/}/list/">Participants</a> | <a name="edit_link{$laboratory.id/}" href="{$script_url/}/laboratories/edit/{$laboratory.id/}/">Modifier</a> | <a name="delete_link{$laboratory.id/}" href="{$script_url/}/laboratories/remove/{$laboratory.id/}/">Supprimer</a>{if condition="$laboratory.is_presently_executing"} | <a name="Execution{$laboratory.id/}" href="{$script_url/}/labo/{$laboratory.id/}/admin">Exécution</a>{/if}{if condition="$laboratory.is_pass"} | <a name="Export{$laboratory.id/}" href="{$script_url/}/laboratories/export/{$laboratory.id/}/">Données</a>{/if}
 					</td>
 				</tr>
 				{/foreach}

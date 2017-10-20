@@ -11,6 +11,8 @@ feature {NONE} -- Initialization
 
 	make(a_database_access:DATABASE_ACCESS; a_keys: ARRAY [READABLE_STRING_GENERAL])
 			-- Initialization of `Current' using `a_database_access' as database manager
+		require
+			Is_Set: a_database_access.is_database_set
 		local
 			l_repository: DB_REPOSITORY
 		do
@@ -33,6 +35,39 @@ feature -- Access
 			-- New empty instance of an object managed by `Current'
 		do
 			Result := prototype.twin
+		end
+
+	fetch_with_and_where(a_keys_values:ITERABLE[TUPLE[key:READABLE_STRING_GENERAL; value:detachable ANY]])
+			-- Fetch all `items' using where clause anding every `a_keys_values'.`key' as test keys and
+			-- `a_keys_values'.`value' as test values.
+
+		local
+			l_fetch_clause:STRING_32
+			l_first:BOOLEAN
+		do
+			create l_fetch_clause.make (database_access.Default_query_allocation_size)
+			l_first := True
+			across a_keys_values as la_keys_values loop
+				if not l_first then
+					l_fetch_clause.append ({STRING_32} " AND ")
+				else
+					l_fetch_clause.append ({STRING_32} "WHERE ")
+				end
+				l_fetch_clause.append ({STRING_32} "`" + la_keys_values.item.key.to_string_32 + {STRING_32} "`")
+				if attached la_keys_values.item.value then
+					l_fetch_clause.append ({STRING_32} " = ")
+				end
+				if attached {READABLE_STRING_GENERAL} la_keys_values.item.value as la_string then
+					l_fetch_clause.append (database_access.database_format.string_format_32 (la_string))
+				elseif attached {DATE_TIME} la_keys_values.item.value as la_date_time then
+					l_fetch_clause.append (database_access.database_format.string_format_32 (database_access.database_format.date_format (la_date_time)))
+				elseif attached la_keys_values.item.value as la_value then
+					l_fetch_clause.append (database_access.database_format.string_format_32 (la_value.out))
+				else
+					l_fetch_clause.append ({STRING_32} " IS NULL")
+				end
+			end
+			execute_fetch_with_where_clause (l_fetch_clause)
 		end
 
 	fetch_all

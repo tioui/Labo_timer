@@ -5,6 +5,7 @@
 		<li{if condition="$is_list_laboratories"} class="active"{/if}><a href="{$script_url/}/laboratories/list/">Laboratoires</a></li>
 		<li{if condition="$is_list_administrators"} class="active"{/if}><a href="{$script_url/}/administrators/list/">Administrateurs</a></li>
 		<li{if condition="$is_list_users"} class="active"{/if}><a href="{$script_url/}/users/list/">Utilisateurs</a></li>
+		<li{if condition="$is_list_groups"} class="active"{/if}><a href="{$script_url/}/groups/list/">Groups</a></li>
 		<li><a href="{$script_url/}/log/out/">Déconnexion</a></li>
 	  </ul>
 	</div><!--/.nav-collapse -->
