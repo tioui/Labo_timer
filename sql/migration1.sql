@@ -1,3 +1,5 @@
+RENAME TABLE `intervention` TO `interventions`;
+
 CREATE TABLE IF NOT EXISTS `labo_timer`.`groups` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
