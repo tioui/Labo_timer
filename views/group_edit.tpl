@@ -1,4 +1,4 @@
-{include file="views/header.tpl"}
+{include file="header.tpl"}
 	{if condition="$create"}
 		{assign name="title" value="Création d'un group" /}
 	{/if}
@@ -6,7 +6,7 @@
 		{assign name="title" value="Modification d'un group" /}
 	{/unless}
 {/include}
-{include file="views/menu.tpl"}{/include}
+{include file="menu.tpl"}{/include}
 	<div class="container">
 		<div class="content_with_menu">
 			{if condition="$create"}
@@ -54,4 +54,4 @@
 			</form>
 		</div>
 	</div>
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

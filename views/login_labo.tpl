@@ -1,4 +1,4 @@
-{include file="views/header.tpl"}{assign name="title" value="Connexion" /}{/include}
+{include file="header.tpl"}{assign name="title" value="Connexion" /}{/include}
 		<div class="container">
 			<center>
 				<H1>Vous devez être connecté pour accéder à ce site.</H1>
@@ -21,4 +21,4 @@
 				</form>
 			</center>
 		<div>
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

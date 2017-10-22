@@ -1,7 +1,7 @@
-{include file="views/header.tpl"}
+{include file="header.tpl"}
 	{assign name="title" value="Suppression d'un laboratoire" /}
 {/include}
-{include file="views/menu.tpl"}{/include}
+{include file="menu.tpl"}{/include}
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Suppression d'un laboratoire</H1>
@@ -81,4 +81,4 @@
 		    $('#edit_form').datepair();
 		</script>
 {/literal}
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

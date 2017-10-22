@@ -1,4 +1,4 @@
-{include file="views/header.tpl"}{assign name="title" value="Laboratoire" /}{/include}
+{include file="header.tpl"}{assign name="title" value="Laboratoire" /}{/include}
 		<div class="container">
 			<center>
 				<H1>Laboratoire {$laboratory.name/}</H1>
@@ -14,4 +14,4 @@ setInterval(checkRaised, 5000, "{$script_url/}/labo/{$laboratory.id/}/is_raised"
 setInterval(update_nb_interventions, 5000, "{$script_url/}/labo/{$laboratory.id/}/nb_interventions");
 </script>
 
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

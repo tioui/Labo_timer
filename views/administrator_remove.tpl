@@ -1,7 +1,7 @@
-{include file="views/header.tpl"}
+{include file="header.tpl"}
 	{assign name="title" value="Suppression d'un administrateur" /}
 {/include}
-{include file="views/menu.tpl"}{/include}
+{include file="menu.tpl"}{/include}
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Suppression d'un administrateur</H1>
@@ -39,4 +39,4 @@
 			</form>
 		</div>
 	</div>
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

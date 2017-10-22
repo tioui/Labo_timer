@@ -1,5 +1,5 @@
-{include file="views/header.tpl"}{assign name="title" value="Liste des groupes" /}{/include}
-{include file="views/menu.tpl"}{assign name="is_list_groups" value="True"/}{/include}
+{include file="header.tpl"}{assign name="title" value="Liste des groupes" /}{/include}
+{include file="menu.tpl"}{assign name="is_list_groups" value="True"/}{/include}
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Liste des groupes</H1>
@@ -25,4 +25,4 @@
 			</table>
 		</div>
 	</div>
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

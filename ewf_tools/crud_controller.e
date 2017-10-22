@@ -15,7 +15,7 @@ inherit
 		rename
 			view_path_extension as view_path_sufix
 		redefine
-			default_create
+			default_create, initialize_template
 		end
 
 feature {NONE} -- Initialization
@@ -80,7 +80,15 @@ feature {NONE} -- Implementation
 	view_path_prefix:READABLE_STRING_GENERAL
 			-- The name of a collection of {MODEL} used in `Current'
 		do
-			Result := views_path + "/" + model_name + "_"
+			Result := model_name + "_"
+		end
+
+	initialize_template(a_template:TEMPLATE_FILE; a_request: WSF_REQUEST)
+			-- Initialize the common values in `a_template'.
+			-- `a_request' is used to get the script url
+		do
+			Precursor(a_template, a_request)
+			a_template.add_value (view_path_prefix, "views_path")
 		end
 
 	list_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE

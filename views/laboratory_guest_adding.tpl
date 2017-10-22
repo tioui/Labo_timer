@@ -1,5 +1,5 @@
-{include file="views/header.tpl"}{assign name="title" value="Liste des invité de laboratoire" /}{/include}
-{include file="views/menu.tpl"/}
+{include file="header.tpl"}{assign name="title" value="Liste des invité de laboratoire" /}{/include}
+{include file="menu.tpl"/}
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Liste des invité du laboratoire {$laboratory.name/} du {$laboratory.date/} de {$laboratory.start_time/} à {$laboratory.end_time/}</H1>
@@ -38,4 +38,4 @@
 			</table>
 		</div>
 	</div>
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}

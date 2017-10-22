@@ -9,7 +9,6 @@ deferred class
 
 inherit
 	CONFIGURATION_SHARED
-	SHARED_TEMPLATE_CONTEXT
 
 feature {NONE} -- Implementation
 

@@ -1,5 +1,5 @@
-{include file="views/header.tpl"}{assign name="title" value="Administration d'un laboratoire." /}{/include}
-{include file="views/menu.tpl"/}
+{include file="header.tpl"}{assign name="title" value="Administration d'un laboratoire." /}{/include}
+{include file="menu.tpl"/}
 	<div class="container">
 		<div class="content_with_menu">
 			<H1>Laboratoire {$laboratory.name/}</H1>
@@ -14,4 +14,4 @@
 setInterval(update_interventions, 5000, "{$script_url/}/labo/{$laboratory.id/}/admin/update_interventions")
 </script>
 
-{include file="views/footer.tpl"/}
+{include file="footer.tpl"/}
