@@ -9,7 +9,7 @@
 		</option>
 		<capability>
 			<catcall_detection support="none"/>
-			<concurrency support="scoop" use="none"/>
+			<concurrency support="none" use="none"/>
 			<void_safety support="all"/>
 		</capability>
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
@@ -47,7 +47,7 @@
 		<root class="LABO_TIMER" feature="make_and_launch"/>
 		<capability>
 			<catcall_detection support="none"/>
-			<concurrency support="scoop"/>
+			<concurrency support="none"/>
 			<void_safety support="all"/>
 		</capability>
 		<variable name="httpd_ssl_disabled" value="true"/>
