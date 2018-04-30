@@ -86,7 +86,7 @@ feature {NONE} -- Initialization
 		local
 			l_template:TEMPLATE_FILE
 		do
-			create l_template.make_from_file (views_path + "/login.tpl")
+			create l_template.make_from_file ("login.tpl")
 			initialize_template (l_template, a_request)
 			if a_error then
 				l_template.add_value (True, "has_error")
@@ -153,7 +153,7 @@ feature {NONE} -- Initialization
 		local
 			l_template:TEMPLATE_FILE
 		do
-			create l_template.make_from_file (views_path + "/login_labo.tpl")
+			create l_template.make_from_file ("login_labo.tpl")
 			initialize_template (l_template, a_request)
 			if a_error then
 				l_template.add_value (True, "has_error")

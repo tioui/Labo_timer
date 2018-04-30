@@ -15,3 +15,4 @@ Put the config.ini in /etc/labo_timer
 
 Put the www folder anywhere you like and point the variable
 
+Initial username and password: admin
