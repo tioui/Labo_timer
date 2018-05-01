@@ -34,9 +34,24 @@ feature -- Filter
 			-- Setup `filter'
 		local
 			f: like filter
+			l_log_file:FILE
 		do
+
 			create {WSF_CORS_FILTER} f
-			f.set_next (create {WSF_LOGGING_FILTER})
+			if configuratons_boolean_value("verbose") then
+				if attached {READABLE_STRING_GENERAL} configurations.at ("log_file") as la_file_name then
+					create {PLAIN_TEXT_FILE}l_log_file.make_with_name (la_file_name)
+					if (l_log_file.exists and then l_log_file.is_writable) or l_log_file.is_creatable then
+						l_log_file.open_append
+					else
+						l_log_file := io.output
+					end
+				else
+					l_log_file := io.output
+				end
+				f.set_next (create {WSF_LOGGING_FILTER}.make_with_output (l_log_file))
+			end
+
 
 				--| Chain more filters like {WSF_CUSTOM_HEADER_FILTER}, ...
 				--| and your owns filters.
