@@ -8,21 +8,13 @@ class
 	ADMINISTRATORS_CONTROLLER
 
 inherit
-	CRUD_CONTROLLER
+	LABO_TIMER_CRUD_CONTROLLER
 		rename
 			model_repository as administrators_repository,
 			login_cookie_manager as administrator_cookie_manager
 		redefine
 			adding_model_create_errors_to_template,
 			edit_post
-		end
-	LOGIN_COOKIE_MANAGER_SHARED
-		undefine
-			default_create
-		end
-	VIEWS_SHARED
-		undefine
-			default_create
 		end
 
 feature {NONE} -- Implementation
@@ -80,7 +72,7 @@ feature {NONE} -- Implementation
 		do
 			if attached administrator_cookie_manager.login_user (a_request) then
 				if attached a_request.form_parameter ("cancel") then
-					create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+					create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 				else
 					if attached {ADMINISTRATOR_VIEW_MODEL} object_from_form (a_request, view_model , "", "") as la_view_model then
 						if attached a_request.form_parameter ("reset") then
@@ -100,7 +92,7 @@ feature {NONE} -- Implementation
 									l_administrator.set_password(la_item.password)
 								end
 								l_administrator.save
-								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+								create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 							end
 						end
 					else
@@ -108,7 +100,7 @@ feature {NONE} -- Implementation
 					end
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 

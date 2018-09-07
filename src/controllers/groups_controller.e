@@ -8,19 +8,11 @@ class
 	GROUPS_CONTROLLER
 
 inherit
-	CRUD_CONTROLLER
+	LABO_TIMER_CRUD_CONTROLLER
 		rename
 			model_repository as groups_repository,
 			login_cookie_manager as administrator_cookie_manager
 		redefine
-			default_create
-		end
-	LOGIN_COOKIE_MANAGER_SHARED
-		undefine
-			default_create
-		end
-	VIEWS_SHARED
-		undefine
 			default_create
 		end
 
@@ -29,7 +21,7 @@ feature {NONE} -- Initialization
 	default_create
 			-- <Precursor>
 		do
-			Precursor {CRUD_CONTROLLER}
+			make_with_response_method_map_size(1)
 			response_method_map.put ([agent member_get, agent member_post], "member")
 		end
 
@@ -86,7 +78,7 @@ feature {NONE} -- Implementation
 					Result := member_list_get (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -100,7 +92,7 @@ feature {NONE} -- Implementation
 					Result := unsupported_method_response (a_request, False, True)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 

@@ -8,7 +8,7 @@ class
 	USERS_CONTROLLER
 
 inherit
-	CRUD_CONTROLLER
+	LABO_TIMER_CRUD_CONTROLLER
 		rename
 			model_repository as users_repository,
 			login_cookie_manager as administrator_cookie_manager

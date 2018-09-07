@@ -19,11 +19,44 @@ feature {NONE} -- Initialization
 	default_create
 			-- Initialization of `Current'
 		do
-			create response_method_map.make (3)
+			make_with_response_method_map_size(1)
+		end
+
+	make_with_response_method_map_size(a_size:INTEGER)
+			-- Initialization of `Current' using `a_size' as `esponse_method_map' initial size.
+		require
+			Size_Positive: a_size > 0
+		do
+			set_script_url_suffix("")
+			create response_method_map.make (a_size)
 			response_method_map.compare_objects
 		end
 
 feature -- Access
+
+	script_url_suffix:STRING_8
+			-- The suffix to add to the request `script_url'
+
+	set_script_url_suffix(a_suffix:STRING_8)
+			-- Assign `script_url_suffix' with the value of `a_sufix'
+		do
+			script_url_suffix := a_suffix
+		ensure
+			Is_Assign: script_url_suffix ~ a_suffix
+		end
+
+	script_url(a_request:WSF_REQUEST; a_path:STRING_8):STRING_8
+			-- Url relative to script name of `a_request' if any, extended by `script_url_suffix' and `a_path`
+		do
+			Result := a_request.script_url (script_url_suffix + a_path)
+		end
+
+	absolute_script_url(a_request:WSF_REQUEST; a_path:STRING_8):STRING_8
+			-- Absolute Url for the script of `a_request' if any, extended by `a_path`
+		do
+			Result := script_url(a_request, a_path)
+			Result.prepend (a_request.server_url)
+		end
 
 	response_method_map:HASH_TABLE[TUPLE[
 										get_method: detachable FUNCTION[WSF_REQUEST, WSF_RESPONSE_MESSAGE];
@@ -69,7 +102,7 @@ feature {NONE} -- Implementation
 			-- Initialize the common values in `a_template'.
 			-- `a_request' is used to get the script url
 		do
-			a_template.add_value (a_request.script_url (""), "script_url")
+			a_template.add_value (script_url (a_request, ""), "script_url")
 		end
 
 	launch_method(

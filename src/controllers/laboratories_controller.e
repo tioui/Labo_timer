@@ -8,20 +8,12 @@ class
 	LABORATORIES_CONTROLLER
 
 inherit
-	CRUD_CONTROLLER
+	LABO_TIMER_CRUD_CONTROLLER
 		rename
 			model_repository as laboratories_repository,
 			login_cookie_manager as administrator_cookie_manager
 		redefine
 			model_collection_name,
-			default_create
-		end
-	LOGIN_COOKIE_MANAGER_SHARED
-		undefine
-			default_create
-		end
-	VIEWS_SHARED
-		undefine
 			default_create
 		end
 
@@ -30,7 +22,7 @@ feature {NONE} -- Initialization
 	default_create
 			-- <Precursor>
 		do
-			Precursor {CRUD_CONTROLLER}
+			make_with_response_method_map_size(3)
 			response_method_map.put ([agent guest_get, agent guest_post], "guest")
 			response_method_map.put ([agent export_get, Void], "export")
 			response_method_map.put ([agent export_all_get, Void], "export_all")
@@ -96,7 +88,7 @@ feature {NONE} -- Implementation
 					Result := guest_list_get (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -110,7 +102,7 @@ feature {NONE} -- Implementation
 					Result := unsupported_method_response (a_request, False, True)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -317,7 +309,7 @@ feature {NONE} -- Implementation
 					Result := argument_not_found_response (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -339,7 +331,7 @@ feature {NONE} -- Implementation
 				l_page.header.put_content_type_text_csv
 				Result := l_page
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 

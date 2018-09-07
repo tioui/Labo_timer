@@ -36,6 +36,13 @@ feature {NONE} -- Initialization
 			Precursor
 			load_configuration_file("/etc/labo_timer/config.ini")
 			load_configuration_file("config.ini")
+			from
+				configurations.start
+			until
+				configurations.after
+			loop
+				configurations.forth
+			end
 			initialize_database
 			initialize_template_context
 		end

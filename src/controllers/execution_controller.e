@@ -8,16 +8,8 @@ class
 	EXECUTION_CONTROLLER
 
 inherit
-	CONTROLLER
+	LABO_TIMER_CONTROLLER
 		redefine
-			default_create
-		end
-	LOGIN_COOKIE_MANAGER_SHARED
-		undefine
-			default_create
-		end
-	VIEWS_SHARED
-		undefine
 			default_create
 		end
 
@@ -26,8 +18,7 @@ feature {NONE} -- Initialization
 	default_create
 			-- <Precursor>
 		do
-			create response_method_map.make (5)
-			response_method_map.compare_objects
+			make_with_response_method_map_size(5)
 			response_method_map.put ([agent guest_get, void], "")
 			response_method_map.put ([agent guest_raise_get, void], "raise")
 			response_method_map.put ([agent guest_lower_get, void], "lower")
@@ -61,7 +52,7 @@ feature {NONE} -- Implementation
 							Result := argument_not_valid_response (a_request, la_laboratory.id.out)
 						end
 					else
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/labo/" + la_laboratory.id.out))
 					end
 				else
 					Result := object_not_found (a_request)
@@ -88,7 +79,7 @@ feature {NONE} -- Implementation
 						end
 						create {WSF_PAGE_RESPONSE} Result.make_with_body (l_result.out)
 					else
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/labo/" + la_laboratory.id.out))
 					end
 				else
 					Result := object_not_found (a_request)
@@ -107,7 +98,7 @@ feature {NONE} -- Implementation
 					if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
 						create {WSF_PAGE_RESPONSE} Result.make_with_body (nb_interventions(la_laboratory).out)
 					else
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/labo/" + la_laboratory.id.out))
 					end
 				else
 					Result := object_not_found (a_request)
@@ -144,12 +135,12 @@ feature {NONE} -- Implementation
 									l_intervention.set_user (la_user)
 									l_intervention.save
 								end
-								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory.id.out))
+								create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/labo/" + la_laboratory.id.out))
 							else
 								Result := argument_not_valid_response (a_request, la_laboratory.id.out)
 							end
 						else
-							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+							create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/labo/" + la_laboratory.id.out))
 						end
 					else
 						Result := object_not_found (a_request)
@@ -194,12 +185,12 @@ feature {NONE} -- Implementation
 									end
 									l_interventions.forth
 								end
-								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory.id.out))
+								create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/labo/" + la_laboratory.id.out))
 							else
 								Result := argument_not_valid_response (a_request, la_laboratory.id.out)
 							end
 						else
-							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/labo/" + la_laboratory.id.out))
+							create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/labo/" + la_laboratory.id.out))
 						end
 					else
 						Result := object_not_found (a_request)
@@ -244,7 +235,7 @@ feature {NONE} -- Implementation
 						Result := argument_not_found_response (a_request)
 					end
 				else
-					create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/in"))
+					create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/in"))
 				end
 			end
 		end
@@ -302,7 +293,7 @@ feature {NONE} -- Implementation
 							la_intervention.set_end_time (l_now)
 							la_intervention.save
 						end
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory_id.item.out + "/admin"))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/labo/" + la_laboratory_id.item.out + "/admin"))
 					else
 						Result := argument_not_valid_response (a_request, l_id_string)
 					end
@@ -310,7 +301,7 @@ feature {NONE} -- Implementation
 					Result := argument_not_found_response (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/log/in"))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/log/in"))
 			end
 		end
 

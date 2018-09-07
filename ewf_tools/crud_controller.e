@@ -15,16 +15,15 @@ inherit
 		rename
 			view_path_extension as view_path_sufix
 		redefine
-			default_create, initialize_template
+			make_with_response_method_map_size, initialize_template
 		end
 
 feature {NONE} -- Initialization
 
-	default_create
+	make_with_response_method_map_size(a_size:INTEGER)
 			-- <Precursor>
 		do
-			create response_method_map.make (5)
-			response_method_map.compare_objects
+			Precursor(a_size + 5)
 			response_method_map.put ([agent list_get, void], "")
 			response_method_map.put ([agent list_get, void], "list")
 			response_method_map.put ([agent create_get, agent create_post], "create")
@@ -111,7 +110,7 @@ feature {NONE} -- Implementation
 				l_template.add_value (l_view_models, model_collection_name)
 				create {HTML_TEMPLATE_PAGE_RESPONSE} Result.make(l_template)
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -124,7 +123,7 @@ feature {NONE} -- Implementation
 				l_template := create_template(a_request, view_model)
 				create {HTML_TEMPLATE_PAGE_RESPONSE} Result.make(l_template)
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -162,7 +161,7 @@ feature {NONE} -- Implementation
 				if attached a_request.form_parameter ("reset") then
 					Result := create_get(a_request)
 				elseif attached a_request.form_parameter ("cancel") then
-					create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+					create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 				else
 					if attached {like view_model} object_from_form (a_request, view_model , "", "") as la_view_model then
 						l_template := create_template(a_request, la_view_model)
@@ -173,14 +172,14 @@ feature {NONE} -- Implementation
 							l_model := model
 							la_view_model.fill_model(l_model)
 							l_model.save
-							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+							create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 						end
 					else
 						Result := unmanaged_error (a_request)
 					end
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -194,7 +193,7 @@ feature {NONE} -- Implementation
 					Result := object_not_found (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -226,7 +225,7 @@ feature {NONE} -- Implementation
 		do
 			if attached login_cookie_manager.login_user (a_request) then
 				if attached a_request.form_parameter ("cancel") then
-					create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+					create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 				else
 					if attached {like view_model} object_from_form (a_request, view_model , "", "") as la_view_model then
 						if attached a_request.form_parameter ("reset") then
@@ -242,7 +241,7 @@ feature {NONE} -- Implementation
 								l_model := model
 								la_view_model.fill_model(l_model)
 								l_model.save
-								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+								create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 							end
 						end
 					else
@@ -250,7 +249,7 @@ feature {NONE} -- Implementation
 					end
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -278,7 +277,7 @@ feature {NONE} -- Implementation
 					Result := object_not_found (a_request)
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 
@@ -290,19 +289,19 @@ feature {NONE} -- Implementation
 		do
 			if attached login_cookie_manager.login_user (a_request) then
 				if attached a_request.form_parameter ("cancel") then
-					create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+					create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 				else
 					if attached {like view_model} object_from_form (a_request, view_model , "", "") as la_view_model then
 						l_model := model
 						la_view_model.fill_model (l_model)
 						l_model.delete
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (url_prefix + "list/"))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, url_prefix + "list/"))
 					else
 						Result := unmanaged_error (a_request)
 					end
 				end
 			else
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url (login_url))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, login_url))
 			end
 		end
 

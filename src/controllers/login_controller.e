@@ -8,20 +8,12 @@ class
 	LOGIN_CONTROLLER
 
 inherit
-	CONTROLLER
+	LABO_TIMER_CONTROLLER
 		redefine
 			execute,
 			default_create
 		end
-	LOGIN_COOKIE_MANAGER_SHARED
-		undefine
-			default_create
-		end
 	GUEST_CONTROLLER
-		undefine
-			default_create
-		end
-	VIEWS_SHARED
 		undefine
 			default_create
 		end
@@ -31,8 +23,7 @@ feature {NONE} -- Initialization
 	default_create
 			-- <Precursor>
 		do
-			create response_method_map.make (3)
-			response_method_map.compare_objects
+			make_with_response_method_map_size(4)
 			response_method_map.put ([agent login_get, agent login_post], "")
 			response_method_map.put ([agent login_get, agent login_post], "in")
 			response_method_map.put ([agent logout_get, Void], "out")
@@ -75,7 +66,7 @@ feature {NONE} -- Initialization
 			-- Manage the GET `a_request' of the 'login' page
 		do
 			if attached administrator_cookie_manager.login_user (a_request) then
-				create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/laboratories/list"))
+				create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/laboratories/list"))
 			else
 				Result := login_with_error(a_request, False)
 			end
@@ -106,7 +97,7 @@ feature {NONE} -- Initialization
 					la_user.fill_administrator (l_administrator)
 					if l_administrator.password.to_string_32 ~ la_administrator.password.to_string_32 then
 						new_connected_administrator := la_administrator
-						create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/laboratories/list"))
+						create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/laboratories/list"))
 					else
 						Result := login_with_error(a_request, True)
 					end
@@ -121,7 +112,7 @@ feature {NONE} -- Initialization
 	logout_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
 			-- Manage the GET `a_request' of the 'logout' functionnality
 		do
-			create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/laboratories/list"))
+			create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/laboratories/list"))
 		end
 
 	login_labo_get (a_request: WSF_REQUEST): WSF_RESPONSE_MESSAGE
@@ -132,7 +123,7 @@ feature {NONE} -- Initialization
 				if attached laboratories_repository.item as la_laboratory then
 					if attached {USER} user_cookie_manager.login_user (a_request) as la_user then
 						if user_has_access_to_laboratory(la_user, la_laboratory) then
-							create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory.id.out))
+							create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/labo/" + la_laboratory.id.out))
 						else
 							Result := login_labo_with_errors(a_request, la_laboratory, False)
 						end
@@ -173,7 +164,7 @@ feature {NONE} -- Initialization
 						if attached users_repository.item as la_user then
 							if user_has_access_to_laboratory(la_user, la_laboratory) then
 								new_connected_guest := la_user
-								create {WSF_REDIRECTION_RESPONSE} Result.make (a_request.script_url ("/labo/" + la_laboratory.id.out))
+								create {WSF_REDIRECTION_RESPONSE} Result.make (script_url (a_request, "/labo/" + la_laboratory.id.out))
 							else
 								Result := login_labo_with_errors(a_request, la_laboratory, True)
 							end
