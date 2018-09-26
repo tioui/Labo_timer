@@ -12,7 +12,7 @@ feature {NONE} -- Initialiation
 	users_table_name:STRING_32
 			-- Database table containing {USER} data
 		once
-			Result := {STRING_32} "users"
+			Result := {STRING_32} "labo_users"
 		end
 
 	administrators_table_name:STRING_32
