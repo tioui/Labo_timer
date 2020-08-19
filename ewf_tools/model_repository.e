@@ -23,7 +23,7 @@ feature {NONE} -- Initialization
 		require
 			Is_Set: a_database_access.is_database_set
 		do
-			make_repository(a_database_access, <<"id">>)
+			make_repository(a_database_access, {ARRAY[READABLE_STRING_GENERAL]}<<"id">>)
 		end
 
 feature -- Access

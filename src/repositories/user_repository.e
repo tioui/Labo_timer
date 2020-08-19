@@ -25,9 +25,9 @@ feature {NONE} -- Initialization
 			Precursor {MODEL_REPOSITORY}(a_database_access)
 			create filler.make (selection, prototype.twin)
 			selection.set_action (filler)
-			create guest_store.make_with_keys (<<"users_id", "laboratories_id">>)
+			create guest_store.make_with_keys ({ARRAY[READABLE_STRING_GENERAL]}<<"users_id", "laboratories_id">>)
 			guest_store.set_table_name (users_laboratories_table_name)
-			guest_store.set_associations (<<["users_id", "user_id"], ["laboratories_id", "laboratory_id"]>>)
+			guest_store.set_associations ({ARRAY[TUPLE[READABLE_STRING_GENERAL, READABLE_STRING_GENERAL]]}<<["users_id", "user_id"], ["laboratories_id", "laboratory_id"]>>)
 			create guest_delete.make
 		end
 

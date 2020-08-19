@@ -10,7 +10,6 @@ deferred class
 inherit
 	WSF_URI_TEMPLATE_RESPONSE_HANDLER
 		redefine
-			response,
 			default_create
 		end
 

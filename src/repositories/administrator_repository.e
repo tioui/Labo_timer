@@ -29,9 +29,9 @@ feature {NONE} -- Initialization
 			-- Initialization of `Current' using `a_database_access' as database manager
 		do
 			Precursor(a_database_access)
-			create store.make_with_keys (<<"users_id">>)
+			create store.make_with_keys ({ARRAY[READABLE_STRING_GENERAL]}<<"users_id">>)
 			store.set_table_name (table_name)
-			store.set_associations (<<["users_id", "id"], ["password", "password"]>>)
+			store.set_associations ({ARRAY[TUPLE[READABLE_STRING_GENERAL, READABLE_STRING_GENERAL]]}<<["users_id", "id"], ["password", "password"]>>)
 		end
 
 feature -- Access
